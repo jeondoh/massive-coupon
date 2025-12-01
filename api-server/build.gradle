@@ -1,0 +1,7 @@
+description = 'api-server'
+
+dependencies {
+    compileOnly project(path: ':core')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
