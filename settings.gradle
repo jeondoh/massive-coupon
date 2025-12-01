@@ -1,1 +1,4 @@
 rootProject.name = 'massive-coupon'
+include 'core'
+include 'massive-router'
+include 'api-server'
