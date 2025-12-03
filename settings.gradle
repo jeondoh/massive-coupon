@@ -1,4 +1,5 @@
 rootProject.name = 'massive-coupon'
 include 'core'
+include 'queue-core'
 include 'massive-router'
 include 'api-server'

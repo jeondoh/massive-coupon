@@ -66,6 +66,11 @@ project(':core') {
     jar { enabled = true }
 }
 
+project(':queue-core') {
+    bootJar { enabled = false }
+    jar { enabled = true }
+}
+
 project(':massive-router') {
     bootJar { enabled = true }
     jar { enabled = false }
