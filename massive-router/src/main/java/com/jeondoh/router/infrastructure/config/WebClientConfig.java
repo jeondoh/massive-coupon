@@ -1,4 +1,4 @@
-package com.jeondoh.router.core.config;
+package com.jeondoh.router.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
