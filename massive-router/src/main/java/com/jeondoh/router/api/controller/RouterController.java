@@ -20,7 +20,7 @@ public class RouterController {
     @RequestMapping("/**")
     public Mono<ResponseApi<Object>> route(ServerHttpRequest request, ServerHttpResponse response) {
         String fullPath = request.getURI().getPath();
-        RouterRequest routerRequest = RouterRequest.of(fullPath, request, response);
+        RouterRequest routerRequest = RouterRequest.validateOf(fullPath, request, response);
         return routerService.route(routerRequest);
     }
 

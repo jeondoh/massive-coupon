@@ -1,83 +1,65 @@
 package com.jeondoh.router.domain.service;
 
 import com.jeondoh.core.reactive.ResponseApi;
+import com.jeondoh.router.api.dto.QueueConfigExists;
+import com.jeondoh.router.api.dto.QueueTargetMatch;
 import com.jeondoh.router.api.dto.RouterRequest;
 import com.jeondoh.router.api.dto.RouterServerHttp;
-import com.jeondoh.router.core.config.QueueTargetProperties;
 import com.jeondoh.router.domain.exception.RouterException;
+import com.jeondoh.router.domain.model.QueueTargetMatcher;
+import com.jeondoh.router.domain.model.RoutingDecision;
+import com.jeondoh.router.domain.model.RoutingType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.AntPathMatcher;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Slf4j
 @Service
 public class RouterServiceImpl implements RouterService {
 
+    private final String redirectUrl;
+    private final QueueTargetMatcher queueTargetMatcher;
+    private final RoutingDecision routingDecision;
+    private final DomainProxyService domainProxyService;
+
     public RouterServiceImpl(
-            QueueTargetProperties queueTargetProperties,
-            DomainProxyService domainProxyService,
-            @Value("${domain.client.redirect-url}") String redirectUrl
+            @Value("${domain.client.redirect-url}") String redirectUrl,
+            QueueTargetMatcher queueTargetMatcher,
+            RoutingDecision routingDecision,
+            DomainProxyService domainProxyService
     ) {
-        this.queueTargetProperties = queueTargetProperties;
-        this.domainProxyService = domainProxyService;
-        this.pathMatcher = new AntPathMatcher();
         this.redirectUrl = redirectUrl;
+        this.queueTargetMatcher = queueTargetMatcher;
+        this.routingDecision = routingDecision;
+        this.domainProxyService = domainProxyService;
     }
 
-    private final QueueTargetProperties queueTargetProperties;
-    private final DomainProxyService domainProxyService;
-    private final AntPathMatcher pathMatcher;
-    private final String redirectUrl;
-
-    // 요청을 처리하여 응답을 반환
+    // 요청 검증 → 대기열 대상 판단 → 라우팅 결정
+    // - 대기열 대상이 아닌 경우: API 서버로 forwarding
+    // - 대기열 대상인 경우: 대기열 필요 여부에 따라 redirect or forwarding
     @Override
     public Mono<ResponseApi<Object>> route(RouterRequest request) {
-        // 요청 검증
-        String requestPath = request.path();
-        if (requestPath == null || requestPath.isEmpty()) {
-            return Mono.error(RouterException.InvalidPathException(request.path()));
-        }
-
         RouterServerHttp serverHttp = RouterServerHttp.from(request);
-
-        // 대기열 대상이 아닌 경우
-        // - API 서버로 포워딩
-        if (!isQueueTarget(requestPath)) {
-            return domainProxyService.forwardRequest(serverHttp);
-        }
-
-        // 대기열 대상인 경우
-        // - 대기열 필요 여부 판단
-        return isQueueRequired(requestPath)
-                .flatMap(needsQueue -> {
-                    if (needsQueue) {
-                        // 대기열이 필요한 경우
-                        // - 클라이언트 리다이렉트
-                        return Mono.error(RouterException.QueueRequiredException(redirectUrl));
-                    }
-                    // 대기열이 불필요한 경우
-                    // - API 서버로 포워딩
-                    return domainProxyService.forwardRequest(serverHttp);
-                });
+        return queueTargetMatcher.match(request.path())
+                .flatMap(queueTarget -> routeWithQueueCheck(serverHttp, queueTarget));
     }
 
-    // todo: 대기열 필요 여부 판단
-    @Override
-    public Mono<Boolean> isQueueRequired(String path) {
-        return Mono.just(false);
+    // 대기열 필요 여부에 따라 라우팅
+    private Mono<ResponseApi<Object>> routeWithQueueCheck(RouterServerHttp serverHttp, QueueTargetMatch queueTarget) {
+        QueueConfigExists queueConfig = QueueConfigExists.of(queueTarget.domain(), queueTarget.resourceId());
+        return routingDecision.decide(queueConfig)
+                .flatMap(decision -> executeRoutingDecision(serverHttp, decision));
     }
 
-    // URL이 대기열 대상인지 판단
-    @Override
-    public boolean isQueueTarget(String path) {
-        List<String> targets = queueTargetProperties.getTargets();
-        return targets.stream()
-                .anyMatch(pattern -> pathMatcher.match(pattern, path));
+    // 라우팅 결정
+    private Mono<ResponseApi<Object>> executeRoutingDecision(RouterServerHttp serverHttp, RoutingType routingType) {
+        return switch (routingType) {
+            // 대기열이 필요한 경우: 클라이언트에 리다이렉트 예외 발생
+            case REDIRECT_TO_QUEUE -> Mono.error(RouterException.QueueRequiredException(redirectUrl));
+            // 대기열이 불필요한 경우: API 서버로 포워딩
+            case FORWARD_TO_BACKEND -> domainProxyService.forwardRequest(serverHttp);
+        };
     }
 
 }
-

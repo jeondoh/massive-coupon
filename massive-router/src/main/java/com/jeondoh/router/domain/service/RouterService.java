@@ -6,14 +6,8 @@ import reactor.core.publisher.Mono;
 
 public interface RouterService {
 
-    // 요청을 처리하여 응답을 반환
-    // - 대기열 필요: 대기열 서버로 요청
-    // - 대기열 불필요: API 서버로 포워딩
+    // 요청 검증 → 대기열 대상 판단 → 라우팅 결정
+    // - 대기열 대상이 아닌 경우: API 서버로 forwarding
+    // - 대기열 대상인 경우: 대기열 필요 여부에 따라 redirect or forwarding
     Mono<ResponseApi<Object>> route(RouterRequest request);
-
-    // 대기열 필요 여부 판단
-    Mono<Boolean> isQueueRequired(String path);
-
-    // URL이 대기열 대상인지 판단
-    boolean isQueueTarget(String path);
 }
