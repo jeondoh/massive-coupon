@@ -1,7 +1,8 @@
 description = 'massive-router'
 
 dependencies {
-    compileOnly project(path: ':core')
+    implementation project(path: ':core')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 }
