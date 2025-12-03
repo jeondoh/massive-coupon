@@ -1,4 +1,4 @@
-package com.jeondoh.router.core.exception;
+package com.jeondoh.core.common.component;
 
 import com.jeondoh.core.common.exception.BaseException;
 import com.jeondoh.core.reactive.ResponseApi;
