@@ -38,6 +38,12 @@ subprojects {
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.2.7.Final:osx-aarch_64'
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
