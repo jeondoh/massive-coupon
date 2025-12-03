@@ -2,7 +2,7 @@ package com.jeondoh.router.domain.service;
 
 import com.jeondoh.core.reactive.ResponseApi;
 import com.jeondoh.router.api.dto.RouterServerHttp;
-import com.jeondoh.router.domain.exception.ForwardingException;
+import com.jeondoh.router.core.exception.ForwardingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

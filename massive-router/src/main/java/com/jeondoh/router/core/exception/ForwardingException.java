@@ -1,4 +1,4 @@
-package com.jeondoh.router.domain.exception;
+package com.jeondoh.router.core.exception;
 
 import com.jeondoh.core.common.exception.BaseException;
 import org.springframework.http.HttpStatusCode;
