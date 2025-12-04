@@ -76,6 +76,11 @@ project(':massive-router') {
     jar { enabled = false }
 }
 
+project(':domain-queue') {
+    bootJar { enabled = true }
+    jar { enabled = false }
+}
+
 project(':api-server') {
     bootJar { enabled = true }
     jar { enabled = false }

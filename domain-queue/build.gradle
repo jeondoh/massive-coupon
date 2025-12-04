@@ -1,0 +1,8 @@
+description = 'domain-queue'
+
+dependencies {
+    implementation project(path: ':core')
+    implementation project(path: ':queue-core')
+
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+}
