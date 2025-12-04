@@ -16,8 +16,11 @@ public class RoutingDecision {
     // - 대기열 설정이 없으면 생성
     // - 대기열 필요 여부 판단
     public Mono<RoutingType> decide(QueueConfigExists queueConfig) {
-        return queueService.createConfigIfNotExists(queueConfig)
-                .then(queueService.checkQueueRequired(queueConfig))
+        Mono<Void> config = queueService.createConfigIfNotExists(queueConfig);
+        Mono<Boolean> isRequired = queueService.checkQueueRequired(queueConfig);
+
+        return config
+                .then(isRequired)
                 .map(needsQueue -> needsQueue
                         ? RoutingType.REDIRECT_TO_QUEUE
                         : RoutingType.FORWARD_TO_BACKEND
