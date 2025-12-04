@@ -1,8 +1,14 @@
 description = 'domain-queue'
 
+ext {
+    COMMONS_POOL_VERSION = "2.12.1"
+}
+
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':queue-core')
 
-    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation "org.apache.commons:commons-pool2:${COMMONS_POOL_VERSION}"
 }
