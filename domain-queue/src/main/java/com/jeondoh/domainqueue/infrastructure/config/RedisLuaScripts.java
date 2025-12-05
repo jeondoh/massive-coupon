@@ -24,6 +24,13 @@ public class RedisLuaScripts {
         return getRedisScript("enter-queue.lua", List.class);
     }
 
+    // Waiting → Running 이동
+    // 반환값: 이동된 멤버 리스트
+    @Bean
+    public RedisScript<List> transferJob() {
+        return getRedisScript("transfer-job.lua", List.class);
+    }
+
     private <T> RedisScript<T> getRedisScript(String script, Class<T> clazz) {
         String scriptSrc = "lua/" + script;
         try {
