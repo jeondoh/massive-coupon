@@ -23,19 +23,16 @@ public class QueueTargetMatcher {
     // 요청 경로가 대기열 대상인지 확인하고 매칭 정보 반환
     // - 설정된 대기열 대상 패턴과 비교
     public Mono<QueueTargetMatch> match(String path) {
-        List<QueueTargetProperties.QueueTarget> targets = queueTargetProperties.getTargets();
-        for (QueueTargetProperties.QueueTarget target : targets) {
-            if (pathMatcher.match(target.getPattern(), path)) {
-                // 경로에서 resourceId 추출
-                Map<String, String> resourceMap = pathMatcher.extractUriTemplateVariables(target.getPattern(), path);
-                QueueTargetMatch match = QueueTargetMatch.of(
-                        target.getDomain(),
-                        resourceMap.get("id")
-                );
-                return Mono.just(match);
+        return Mono.fromCallable(() -> {
+            List<QueueTargetProperties.QueueTarget> targets = queueTargetProperties.getTargets();
+            for (QueueTargetProperties.QueueTarget target : targets) {
+                if (pathMatcher.match(target.getPattern(), path)) {
+                    Map<String, String> resourceMap = pathMatcher.extractUriTemplateVariables(target.getPattern(), path);
+                    return QueueTargetMatch.of(target.getDomain(), resourceMap.get("id"));
+                }
             }
-        }
-        return Mono.empty();
+            return null;
+        }).flatMap(Mono::justOrEmpty);
     }
 
 }
