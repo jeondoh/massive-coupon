@@ -16,15 +16,8 @@ public record QueueDomainKey(
                 domainType,
                 resourceId,
                 memberId,
-                createDomainKey(domainType, resourceId, memberId)
+                domainType.getDomainKey(resourceId, memberId)
         );
     }
 
-    private static String createDomainKey(
-            DomainType domain,
-            String resourceId,
-            String memberId
-    ) {
-        return domain + ":" + resourceId + ":" + memberId;
-    }
 }
