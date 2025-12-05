@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.jeondoh.core.common.util.StaticVariables.AUTH_HEADER_PREFIX_KEY;
 
 @RestController
-@RequestMapping("/queue")
+@RequestMapping("/api/queue")
 @RequiredArgsConstructor
 public class QueueEnterController {
 

@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/queue/config")
+@RequestMapping("/api/admin/queue/config")
 @RequiredArgsConstructor
 public class QueueConfigController {
 
