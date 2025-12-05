@@ -26,4 +26,8 @@ public enum DomainType {
         String timeKey = TimeHelper.formatToTenSecondBucket(localDateTime);
         return String.format(TRAFFIC_KEY + ":%s:%s:%s", this.name(), resourceId, timeKey);
     }
+
+    public String getDomainKey(String resourceId, String memberId) {
+        return this.name() + ":" + resourceId + ":" + memberId;
+    }
 }
