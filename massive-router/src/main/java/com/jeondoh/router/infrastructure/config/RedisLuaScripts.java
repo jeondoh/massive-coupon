@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 
 import java.io.IOException;
+import java.util.List;
 
 @Configuration
 public class RedisLuaScripts {
@@ -26,6 +27,13 @@ public class RedisLuaScripts {
     @Bean
     public RedisScript<Long> checkQueueRequired() {
         return getRedisScript("check-queue-required.lua", Long.class);
+    }
+
+    // 여러 멤버의 대기순번 및 대기자 수 조회
+    // 반환값: List (성공여부, 대기 순번, 전체 대기자 수)
+    @Bean
+    public RedisScript<List> waitOrder() {
+        return getRedisScript("wait-order.lua", List.class);
     }
 
     private <T> RedisScript<T> getRedisScript(String script, Class<T> clazz) {
