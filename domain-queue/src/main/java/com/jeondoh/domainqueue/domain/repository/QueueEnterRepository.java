@@ -4,6 +4,7 @@ import com.jeondoh.domainqueue.api.dto.QueueDomainKey;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrder;
 import com.jeondoh.domainqueue.domain.model.QueueEntry;
 import com.jeondoh.queuecore.domain.QueueType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Repository;
@@ -11,15 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class QueueEnterRepository {
-
-    public QueueEnterRepository(
-            StringRedisTemplate redisTemplate,
-            RedisScript<List> enterQueue
-    ) {
-        this.redisTemplate = redisTemplate;
-        this.enterQueue = enterQueue;
-    }
 
     private final StringRedisTemplate redisTemplate;
     private final RedisScript<List> enterQueue;
@@ -30,7 +24,7 @@ public class QueueEnterRepository {
     public QueueEntry enterQueue(QueueDomainKey queueDomainKey) {
         String waitingKey = QueueType.WAITING.getKey(queueDomainKey.domainType(), queueDomainKey.resourceId());
         String runningKey = QueueType.RUNNING.getKey(queueDomainKey.domainType(), queueDomainKey.resourceId());
-        long currentTime = System.nanoTime();
+        long currentTime = System.currentTimeMillis();
 
         List<Long> execute = redisTemplate.execute(
                 enterQueue,

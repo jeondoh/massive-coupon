@@ -22,7 +22,7 @@ public class QueueTransferRepository {
             int transferSize,
             int threshold
     ) {
-        long currentTime = System.nanoTime();
+        long currentTime = System.currentTimeMillis();
         redisTemplate.execute(
                 transferJob,
                 List.of(waitingKey, runningKey),
