@@ -1,4 +1,4 @@
-package com.jeondoh.router.api.dto;
+package com.jeondoh.domainqueue.api.dto;
 
 import com.jeondoh.core.common.annotation.ValidEnum;
 import com.jeondoh.queuecore.domain.DomainType;

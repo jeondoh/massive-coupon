@@ -23,20 +23,17 @@ public class QueueLuaRepository {
             @Value("${queue.traffic.ttl-seconds}") long trafficTTLSeconds,
             RedisScript<Long> createConfigIfNotExists,
             RedisScript<Long> checkQueueRequired,
-            RedisScript<List> waitOrder,
             ReactiveRedisTemplate<String, String> reactiveRedisTemplate
     ) {
         this.trafficTTLSeconds = trafficTTLSeconds;
         this.createConfigIfNotExists = createConfigIfNotExists;
         this.checkQueueRequired = checkQueueRequired;
-        this.waitOrder = waitOrder;
         this.reactiveRedisTemplate = reactiveRedisTemplate;
     }
 
     private final long trafficTTLSeconds;
     private final RedisScript<Long> createConfigIfNotExists;
     private final RedisScript<Long> checkQueueRequired;
-    private final RedisScript<List> waitOrder;
     private final ReactiveRedisTemplate<String, String> reactiveRedisTemplate;
 
     // Config 존재 여부 확인
@@ -88,16 +85,6 @@ public class QueueLuaRepository {
                 CONFIG_THRESHOLD,
                 CONFIG_TRAFFIC_RPM,
                 trafficTTLSeconds
-        );
-    }
-
-    // 멤버의 대기순번, 대기자 수 가져오기
-    // - 대기 순번 및 전체 대기자 수 반환
-    public Flux<List> waitOrder(String waitingKey, String domainKey) {
-        return reactiveRedisTemplate.execute(
-                waitOrder,
-                List.of(waitingKey),
-                domainKey
         );
     }
 

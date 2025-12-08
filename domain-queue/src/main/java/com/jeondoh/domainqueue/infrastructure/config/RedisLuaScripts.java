@@ -31,6 +31,13 @@ public class RedisLuaScripts {
         return getRedisScript("transfer-job.lua", List.class);
     }
 
+    // 여러 멤버의 대기순번 및 대기자 수 조회
+    // 반환값: List (성공여부, 대기 순번, 전체 대기자 수)
+    @Bean
+    public RedisScript<List> waitOrder() {
+        return getRedisScript("wait-order.lua", List.class);
+    }
+
     private <T> RedisScript<T> getRedisScript(String script, Class<T> clazz) {
         String scriptSrc = "lua/" + script;
         try {
