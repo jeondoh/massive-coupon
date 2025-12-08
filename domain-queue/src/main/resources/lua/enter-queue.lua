@@ -3,7 +3,7 @@
 -- KEYS[1] = Waiting Queue 키
 -- KEYS[2] = Running Queue 키
 -- ARGV[1] = Domain:resourceId:memberId (member 값)
--- ARGV[2] = currentTime (score 값, nano seconds)
+-- ARGV[2] = currentTime (score 값, 밀리초)
 -- ARGV[3] = queue token 키
 -- ARGV[4] = queue token TTL
 
