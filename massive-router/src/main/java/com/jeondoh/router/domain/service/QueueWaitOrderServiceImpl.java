@@ -28,8 +28,8 @@ public class QueueWaitOrderServiceImpl implements QueueWaitOrderService {
         return queueLuaRepository.waitOrder(waitingKey, domain.getDomainKey(resourceId, memberId))
                 .next()
                 .flatMap(result -> {
-                    Object status = result.getFirst();
-                    if (status == null || status.equals(0)) {
+                    long status = ((Number) result.getFirst()).longValue();
+                    if (status == 0L) {
                         return Mono.error(QueueWaitOrderException.noMemberInWaitingQueue());
                     }
                     QueueWaitOrderResponse queueWaitOrderResponse = QueueWaitOrderResponse.of(
