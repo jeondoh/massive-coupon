@@ -34,8 +34,7 @@ public class QueueTokenHelper {
     }
 
     // redis에서 token 유효성 확인
-    public Mono<Boolean> validateTokenInRedis(String token) {
-        String key = keyPrefix + ":" + token;
+    public Mono<Boolean> validateTokenInRedis(String key) {
         return reactiveRedisTemplate.hasKey(key)
                 .flatMap(exists -> {
                     if (exists) {
@@ -43,7 +42,6 @@ public class QueueTokenHelper {
                         return reactiveRedisTemplate.expire(key, Duration.ofSeconds(ttlSeconds))
                                 .thenReturn(true);
                     } else {
-                        log.warn("Queue Token이 없거나 만료되었습니다. {}", key);
                         return Mono.just(false);
                     }
                 });
