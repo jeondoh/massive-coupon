@@ -18,18 +18,18 @@ public class QueueTokenValidationFilter implements WebFilter {
 
     public QueueTokenValidationFilter(
             QueueTokenHelper queueTokenHelper,
-            @Value("${queue.token.cookie-name}") String cookieName,
+            @Value("${queue.token.key-prefix}") String keyPrefix,
             @Value("${queue.token.attr-valid-key}") String attrValidKey,
             @Value("${queue.token.attr-value-key}") String attrValueKey
     ) {
         this.queueTokenHelper = queueTokenHelper;
-        this.cookieName = cookieName;
+        this.keyPrefix = keyPrefix;
         this.attrValidKey = attrValidKey;
         this.attrValueKey = attrValueKey;
     }
 
     private final QueueTokenHelper queueTokenHelper;
-    private final String cookieName;
+    private final String keyPrefix;
     private final String attrValidKey;
     private final String attrValueKey;
 
@@ -38,19 +38,23 @@ public class QueueTokenValidationFilter implements WebFilter {
     // - Redis에서 Token 유효성 검증
     // - 유효시 ServerWebExchange Attribute 설정
     // - TTL 갱신
+    // - 쿠키 삭제
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        HttpCookie httpCookie = exchange.getRequest().getCookies().getFirst(cookieName);
+        HttpCookie httpCookie = exchange.getRequest().getCookies().getFirst(keyPrefix);
 
         return Mono.justOrEmpty(httpCookie)
                 .flatMap(queueTokenHelper::extractTokenFromCookie)
-                .flatMap(token -> queueTokenHelper.validateTokenInRedis(token)
-                        .filter(Boolean::booleanValue)
+                .flatMap(key -> queueTokenHelper.validateTokenInRedis(key)
                         .doOnNext(valid -> {
-                            // Token 유효
-                            // - attribute 추가, 이후 QueueRequirementFilter에서 사용
-                            exchange.getAttributes().put(attrValidKey, true);
-                            exchange.getAttributes().put(attrValueKey, token);
+                            if (valid) {
+                                // attribute 추가, QueueRequirementFilter에서 사용
+                                exchange.getAttributes().put(attrValidKey, true);
+                                exchange.getAttributes().put(attrValueKey, key);
+                            } else {
+                                // 쿠키 삭제
+                                exchange.getResponse().getCookies().remove(keyPrefix);
+                            }
                         })
                 )
                 .then(chain.filter(exchange));
