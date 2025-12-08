@@ -84,7 +84,7 @@ public class QueueLuaRepository {
                 keys,
                 CONFIG_THRESHOLD,
                 CONFIG_TRAFFIC_RPM,
-                trafficTTLSeconds
+                String.valueOf(trafficTTLSeconds)
         );
     }
 
