@@ -7,7 +7,8 @@ public record RouterServerHttp(
         ServerHttpRequest request,
         ServerHttpResponse response
 ) {
-    public static RouterServerHttp from(RouterRequest request) {
-        return new RouterServerHttp(request.request(), request.response());
+    public static RouterServerHttp of(ServerHttpRequest request, ServerHttpResponse response) {
+        return new RouterServerHttp(request, response);
     }
+
 }

@@ -5,10 +5,9 @@ public record QueueWaitOrderResponse(
         long rank,
         long total
 ) {
-    public static QueueWaitOrderResponse of(Object status, Object rank, Object total) {
-        long statusLong = ((Number) status).longValue();
+    public static QueueWaitOrderResponse of(long status, Object rank, Object total) {
         long rankLong = ((Number) rank).longValue();
         long totalLong = ((Number) total).longValue();
-        return new QueueWaitOrderResponse(statusLong, rankLong, totalLong);
+        return new QueueWaitOrderResponse(status, rankLong, totalLong);
     }
 }

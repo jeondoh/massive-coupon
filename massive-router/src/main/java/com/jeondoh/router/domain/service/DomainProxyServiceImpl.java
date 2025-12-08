@@ -18,21 +18,38 @@ public class DomainProxyServiceImpl implements DomainProxyService {
 
     public DomainProxyServiceImpl(
             WebClient webClient,
-            @Value("${domain.server.api-url}") String domainServerApiUrl
+            @Value("${domain.server.api-url}") String apiServerUrl,
+            @Value("${domain.server.queue-url}") String queueServerUrl
     ) {
         this.webClient = webClient;
-        this.domainApiServerUrl = domainServerApiUrl;
+        this.apiServerUrl = apiServerUrl;
+        this.queueServerUrl = queueServerUrl;
     }
 
     private final WebClient webClient;
-    private final String domainApiServerUrl;
+    private final String apiServerUrl;
+    private final String queueServerUrl;
 
-    // request 요청을 API 서버로 포워딩
+
+    // API 서버로 포워딩
+    @Override
+    public Mono<ResponseApi<Object>> forwardToApiServer(RouterServerHttp serverHttp) {
+        return forwardRequest(serverHttp, apiServerUrl);
+    }
+
+    // Queue 서버로 포워딩
+    @Override
+    public Mono<ResponseApi<Object>> forwardToQueue(RouterServerHttp serverHttp) {
+        return forwardRequest(serverHttp, queueServerUrl);
+    }
+
+    // request 요청을 서버로 포워딩
     // - 원본 요청 그대로 전달
     // - 모든 예외는 BaseException을 던져 ReactiveBaseExceptionHandler에서 처리
-    @Override
-    public Mono<ResponseApi<Object>> forwardRequest(RouterServerHttp serverHttp) {
-        final String targetUrl = createTargetUrl(serverHttp.request());
+    private Mono<ResponseApi<Object>> forwardRequest(RouterServerHttp serverHttp, String baseUrl) {
+        final String targetUrl = createTargetUrl(serverHttp.request(), baseUrl);
+
+        log.trace("포워딩 URL: {}", targetUrl);
 
         return webClient
                 .method(serverHttp.request().getMethod())
@@ -46,7 +63,7 @@ public class DomainProxyServiceImpl implements DomainProxyService {
                             values.forEach(value -> serverHttp.response().getHeaders().add(key, value));
                         }
                     });
-                    // API 서버의 상태 코드 확인
+                    // 서버의 상태 코드 확인
                     if (clientResponse.statusCode().isError()) {
                         // 에러 응답인 경우
                         return clientResponse.bodyToMono(new ParameterizedTypeReference<ResponseApi<Object>>() {
@@ -67,8 +84,8 @@ public class DomainProxyServiceImpl implements DomainProxyService {
     }
 
     // API 서버 주소 생성
-    private String createTargetUrl(ServerHttpRequest request) {
-        String url = domainApiServerUrl + request.getURI().getPath();
+    private String createTargetUrl(ServerHttpRequest request, String baseUrl) {
+        String url = baseUrl + request.getURI().getPath();
         if (request.getURI().getQuery() != null) {
             url += "?" + request.getURI().getQuery();
         }

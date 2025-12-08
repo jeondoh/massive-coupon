@@ -10,11 +10,11 @@ public class RouterException extends BaseException {
         super(code, message, statusCode, detailMessage);
     }
 
-    public static RouterException InvalidPathException(String... detailMessage) {
-        return new RouterException("ROUTER_01", "유효하지 않은 요청 경로입니다", HttpStatus.BAD_REQUEST, detailMessage);
+    public static RouterException QueueRequiredException(String redirectUrl) {
+        return new RouterException("ROUTER_01", "대기열 서버로의 라우팅이 필요합니다", HttpStatus.PERMANENT_REDIRECT, redirectUrl);
     }
 
-    public static RouterException QueueRequiredException(String redirectUrl) {
-        return new RouterException("ROUTER_02", "대기열 서버로의 라우팅이 필요합니다", HttpStatus.PERMANENT_REDIRECT, redirectUrl);
+    public static RouterException QueueTokenRequiredException() {
+        return new RouterException("ROUTER_02", "대기열 요청시 토큰이 필요합니다.", HttpStatus.UNAUTHORIZED);
     }
 }

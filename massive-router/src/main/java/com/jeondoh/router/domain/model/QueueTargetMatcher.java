@@ -21,18 +21,28 @@ public class QueueTargetMatcher {
     }
 
     // 요청 경로가 대기열 대상인지 확인하고 매칭 정보 반환
-    // - 설정된 대기열 대상 패턴과 비교
-    public Mono<QueueTargetMatch> match(String path) {
-        return Mono.fromCallable(() -> {
+    // - 설정된 대기열 진입 대상 URL(queue.targets) 패턴과 비교
+    public Mono<QueueTargetMatch> matchTarget(String path) {
+        return Mono.defer(() -> {
             List<QueueTargetProperties.QueueTarget> targets = queueTargetProperties.getTargets();
             for (QueueTargetProperties.QueueTarget target : targets) {
                 if (pathMatcher.match(target.getPattern(), path)) {
                     Map<String, String> resourceMap = pathMatcher.extractUriTemplateVariables(target.getPattern(), path);
-                    return QueueTargetMatch.of(target.getDomain(), resourceMap.get("id"));
+                    return Mono.just(QueueTargetMatch.of(target.getDomain(), resourceMap.get("id")));
                 }
             }
-            return null;
-        }).flatMap(Mono::justOrEmpty);
+            return Mono.empty();
+        });
+    }
+
+    // 요청 경로가 토큰 체크 대상인지 확인
+    // - 설정된 대기열 토큰 검증 대상 URL(queue.authorization) 패턴과 비교
+    public Mono<Boolean> matchQueueToken(String path) {
+        return Mono.defer(() -> {
+            boolean matched = queueTargetProperties.getAuthorization().stream()
+                    .anyMatch(queueToken -> pathMatcher.match(queueToken.getPattern(), path));
+            return Mono.just(matched);
+        });
     }
 
 }
