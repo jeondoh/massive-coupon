@@ -1,4 +1,4 @@
-package com.jeondoh.router.domain.repository;
+package com.jeondoh.router.infrastructure.repository;
 
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;

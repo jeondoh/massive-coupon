@@ -3,7 +3,7 @@ package com.jeondoh.domainqueue.domain.service;
 import com.jeondoh.domainqueue.api.dto.QueueDomainKey;
 import com.jeondoh.domainqueue.api.dto.QueueEnterRequest;
 import com.jeondoh.domainqueue.domain.model.QueueEntry;
-import com.jeondoh.domainqueue.domain.repository.QueueEnterRepository;
+import com.jeondoh.domainqueue.infrastructure.repository.QueueEnterRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

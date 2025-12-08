@@ -4,7 +4,7 @@ import com.jeondoh.domainqueue.api.dto.QueueDomainMember;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrder;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrderResponse;
 import com.jeondoh.domainqueue.domain.exception.QueueWaitOrderException;
-import com.jeondoh.domainqueue.domain.repository.QueueWaitOrderRepository;
+import com.jeondoh.domainqueue.infrastructure.repository.QueueWaitOrderRepository;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;
 import lombok.RequiredArgsConstructor;

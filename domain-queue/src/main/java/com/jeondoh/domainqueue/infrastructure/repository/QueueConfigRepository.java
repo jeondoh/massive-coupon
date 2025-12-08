@@ -1,4 +1,4 @@
-package com.jeondoh.domainqueue.domain.repository;
+package com.jeondoh.domainqueue.infrastructure.repository;
 
 import com.jeondoh.queuecore.component.QueueConfigMap;
 import com.jeondoh.queuecore.domain.DomainType;

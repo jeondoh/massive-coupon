@@ -4,7 +4,7 @@ import com.jeondoh.queuecore.component.QueueConfigMap;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.exception.QueueConfigException;
 import com.jeondoh.router.api.dto.QueueConfigExists;
-import com.jeondoh.router.domain.repository.QueueLuaRepository;
+import com.jeondoh.router.infrastructure.repository.QueueLuaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

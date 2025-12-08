@@ -1,6 +1,6 @@
 package com.jeondoh.domainqueue.infrastructure.scheduler;
 
-import com.jeondoh.domainqueue.domain.repository.QueueTransferRepository;
+import com.jeondoh.domainqueue.infrastructure.repository.QueueTransferRepository;
 import com.jeondoh.queuecore.component.QueueConfigMap;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;

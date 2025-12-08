@@ -3,7 +3,7 @@ package com.jeondoh.domainqueue.domain.service;
 import com.jeondoh.domainqueue.api.dto.QueueHeartbeat;
 import com.jeondoh.domainqueue.api.dto.QueueRunningScore;
 import com.jeondoh.domainqueue.domain.exception.QueueRunningScoreException;
-import com.jeondoh.domainqueue.domain.repository.QueueRunningRepository;
+import com.jeondoh.domainqueue.infrastructure.repository.QueueRunningRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
