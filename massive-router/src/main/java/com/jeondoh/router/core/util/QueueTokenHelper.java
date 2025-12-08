@@ -15,16 +15,16 @@ public class QueueTokenHelper {
 
     public QueueTokenHelper(
             ReactiveRedisTemplate<String, String> reactiveRedisTemplate,
-            @Value("${queue.token.key-name}") String keyName,
+            @Value("${queue.token.key-prefix}") String keyPrefix,
             @Value("${queue.token.ttl-seconds}") int ttlSeconds
     ) {
         this.reactiveRedisTemplate = reactiveRedisTemplate;
-        this.keyName = keyName;
+        this.keyPrefix = keyPrefix;
         this.ttlSeconds = ttlSeconds;
     }
 
     private final ReactiveRedisTemplate<String, String> reactiveRedisTemplate;
-    private final String keyName;
+    private final String keyPrefix;
     private final int ttlSeconds;
 
     // cookie에서 token 추출
@@ -35,7 +35,7 @@ public class QueueTokenHelper {
 
     // redis에서 token 유효성 확인
     public Mono<Boolean> validateTokenInRedis(String token) {
-        String key = keyName + ":" + token;
+        String key = keyPrefix + ":" + token;
         return reactiveRedisTemplate.hasKey(key)
                 .flatMap(exists -> {
                     if (exists) {

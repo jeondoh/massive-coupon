@@ -4,6 +4,8 @@
 -- KEYS[2] = Running Queue 키
 -- ARGV[1] = Domain:resourceId:memberId (member 값)
 -- ARGV[2] = currentTime (score 값, nano seconds)
+-- ARGV[3] = queue token 키
+-- ARGV[4] = queue token TTL
 
 -- 반환값: {status, rank, total}
 -- status: -1(이미 참여중), 0(이미 대기중), 1(성공)
@@ -14,6 +16,8 @@ local waitingQueueKey = KEYS[1]
 local runningQueueKey = KEYS[2]
 local memberValue = ARGV[1]
 local currentTime = ARGV[2]
+local queueTokenKey = ARGV[3]
+local queueTokenTTL = ARGV[4]
 local rank = 0
 local total = 0
 
@@ -33,6 +37,9 @@ end
 
 -- Waiting Queue에 추가
 redis.call('ZADD', waitingQueueKey, currentTime, memberValue)
+
+-- token 저장
+redis.call('SET', queueTokenKey, currentTime, "EX", queueTokenTTL)
 
 -- 대기 순번 조회
 rank = redis.call('ZRANK', waitingQueueKey, memberValue)
