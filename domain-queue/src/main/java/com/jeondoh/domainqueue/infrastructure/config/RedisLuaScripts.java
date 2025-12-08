@@ -44,6 +44,13 @@ public class RedisLuaScripts {
         return getRedisScript("update-running-score.lua", Long.class);
     }
 
+    // timeout된 멤버를 running queue에서 제거
+    // 반환값: 제거된 멤버 리스트
+    @Bean
+    public RedisScript<List> extractMember() {
+        return getRedisScript("extract-member.lua", List.class);
+    }
+
     private <T> RedisScript<T> getRedisScript(String script, Class<T> clazz) {
         String scriptSrc = "lua/" + script;
         try {
