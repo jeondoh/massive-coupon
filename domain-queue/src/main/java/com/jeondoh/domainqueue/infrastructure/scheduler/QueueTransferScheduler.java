@@ -22,6 +22,7 @@ public class QueueTransferScheduler {
     private final QueueConfigMap queueConfigMap;
     private final QueueTransferRepository queueTransferRepository;
 
+    // waiting queue -> running queue 이동
     @Scheduled(fixedDelayString = "${queue.transfer.interval}")
     public void transferQueue() {
         // domain 에 해당하는 config key 조회

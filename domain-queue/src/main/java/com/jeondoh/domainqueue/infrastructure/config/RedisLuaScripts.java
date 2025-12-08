@@ -38,6 +38,12 @@ public class RedisLuaScripts {
         return getRedisScript("wait-order.lua", List.class);
     }
 
+    // running score 값 업데이트
+    @Bean
+    public RedisScript<Long> updateRunningScore() {
+        return getRedisScript("update-running-score.lua", Long.class);
+    }
+
     private <T> RedisScript<T> getRedisScript(String script, Class<T> clazz) {
         String scriptSrc = "lua/" + script;
         try {
