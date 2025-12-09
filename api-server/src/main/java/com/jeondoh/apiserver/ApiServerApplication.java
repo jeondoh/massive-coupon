@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication(scanBasePackages = {
         "com.jeondoh.apiserver",
         "com.jeondoh.core.common.component",
-        "com.jeondoh.core.servlet.component"
+        "com.jeondoh.core.servlet.component",
+        "com.jeondoh.core.common.infrastructure.rabbitmq"
 })
 public class ApiServerApplication {
 

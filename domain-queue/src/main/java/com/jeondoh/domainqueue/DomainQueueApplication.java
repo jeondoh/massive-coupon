@@ -9,7 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "com.jeondoh.domainqueue",
         "com.jeondoh.core.common.component",
         "com.jeondoh.core.servlet.component",
-        "com.jeondoh.queuecore.component"
+        "com.jeondoh.queuecore.component",
+        "com.jeondoh.core.common.infrastructure.rabbitmq"
 })
 public class DomainQueueApplication {
 
