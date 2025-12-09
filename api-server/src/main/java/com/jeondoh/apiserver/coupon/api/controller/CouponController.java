@@ -47,10 +47,15 @@ public class CouponController {
     @PostMapping("/{couponDetailId}")
     public ResponseApi<IssueCouponResponse> issueCoupon(
             HttpServletRequest httpServletRequest,
-            @PathVariable Long couponDetailId
+            @PathVariable Long couponDetailId,
+            @Valid @RequestBody CouponIssueRequest couponIssuedRequest
     ) {
         JwtToken jwtToken = jwtDecoder.decode(httpServletRequest.getHeader(AUTH_HEADER_PREFIX_KEY));
-        IssueCouponRequest issueCouponRequest = IssueCouponRequest.of(couponDetailId, jwtToken.memberId());
+        IssueCouponRequest issueCouponRequest = IssueCouponRequest.of(
+                couponDetailId,
+                jwtToken.memberId(),
+                couponIssuedRequest.resourceId()
+        );
         IssueCouponResponse issueCouponResponse = couponService.issueCoupon(issueCouponRequest);
         return ResponseApi.ok(issueCouponResponse);
     }
