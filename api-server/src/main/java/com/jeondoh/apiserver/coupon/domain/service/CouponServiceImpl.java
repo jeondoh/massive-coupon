@@ -4,6 +4,7 @@ import com.jeondoh.apiserver.coupon.api.dto.*;
 import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
 import com.jeondoh.apiserver.coupon.domain.model.Coupon;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetail;
+import com.jeondoh.apiserver.coupon.infrastructure.rabbitmq.CouponQueueRemoveRabbitmqSender;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponSearchQueryDslRepository;
@@ -23,6 +24,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final CouponDetailRepository couponDetailRepository;
     private final CouponSearchQueryDslRepository couponSearchQueryDslRepository;
+    private final CouponQueueRemoveRabbitmqSender couponQueueRemoveRabbitmqSender;
 
     // 쿠폰 목록 조회
     @Override
@@ -46,7 +48,10 @@ public class CouponServiceImpl implements CouponService {
         Long couponDetailId = issueCouponRequest.couponDetailId();
 
         // 쿠폰 발급 중복체크
-        Long duplicateCount = couponRepository.findDuplicateIssuedCouponWithLock(couponDetailId, Long.parseLong(memberId));
+        Long duplicateCount = couponRepository.findDuplicateIssuedCouponWithLock(
+                couponDetailId,
+                Long.parseLong(memberId)
+        );
         if (duplicateCount > 0) {
             throw CouponException.duplicateIssueException();
         }
@@ -64,6 +69,11 @@ public class CouponServiceImpl implements CouponService {
         // 쿠폰 재고 차감
         couponDetail.decreaseRemainQuantity();
 
+        // MQ - 대기열 큐 삭제 메시지 전송
+        couponQueueRemoveRabbitmqSender.sendRemoveRunningQueue(
+                issueCouponRequest.resourceId(),
+                issueCouponRequest.memberId()
+        );
         return IssueCouponResponse.of(savedCoupon.getId(), savedCoupon.getStatus());
     }
 

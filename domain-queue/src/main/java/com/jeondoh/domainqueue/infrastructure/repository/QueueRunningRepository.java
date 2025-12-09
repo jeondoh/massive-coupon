@@ -1,6 +1,7 @@
 package com.jeondoh.domainqueue.infrastructure.repository;
 
 import com.jeondoh.domainqueue.api.dto.QueueRunningScore;
+import com.jeondoh.domainqueue.api.dto.RemoveRunningQueueMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -26,6 +27,11 @@ public class QueueRunningRepository {
                 String.valueOf(currentTime)
         );
 
+    }
+
+    // running queue에서 멤버 제거
+    public void removeMember(RemoveRunningQueueMember removeRunningQueueMember) {
+        redisTemplate.opsForZSet().remove(removeRunningQueueMember.runningKey(), removeRunningQueueMember.memberId());
     }
 
 }
