@@ -1,6 +1,6 @@
 package com.jeondoh.router.domain.service;
 
-import com.jeondoh.queuecore.domain.DomainType;
+import com.jeondoh.core.common.dto.DomainType;
 import com.jeondoh.queuecore.exception.QueueConfigException;
 import com.jeondoh.router.api.dto.QueueConfigExists;
 import com.jeondoh.router.api.dto.QueueRunningMemberCheck;

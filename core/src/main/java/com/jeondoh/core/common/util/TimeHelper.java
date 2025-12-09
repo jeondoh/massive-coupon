@@ -1,4 +1,4 @@
-package com.jeondoh.queuecore.utils;
+package com.jeondoh.core.common.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

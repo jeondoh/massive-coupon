@@ -1,7 +1,7 @@
 package com.jeondoh.domainqueue.api.dto;
 
 import com.jeondoh.core.common.annotation.ValidEnum;
-import com.jeondoh.queuecore.domain.DomainType;
+import com.jeondoh.core.common.dto.DomainType;
 import jakarta.validation.constraints.NotNull;
 
 public record QueueWaitOrderRequest(

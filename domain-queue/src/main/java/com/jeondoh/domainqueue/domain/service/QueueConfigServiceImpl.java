@@ -1,10 +1,10 @@
 package com.jeondoh.domainqueue.domain.service;
 
+import com.jeondoh.core.common.dto.DomainType;
 import com.jeondoh.domainqueue.api.dto.QueueConfigDeleteRequest;
 import com.jeondoh.domainqueue.api.dto.QueueConfigSaveRequest;
 import com.jeondoh.domainqueue.api.dto.QueueConfigUpdateRequest;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigRepository;
-import com.jeondoh.queuecore.domain.DomainType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

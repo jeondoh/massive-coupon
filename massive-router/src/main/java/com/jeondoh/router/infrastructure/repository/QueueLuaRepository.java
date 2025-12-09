@@ -1,6 +1,6 @@
 package com.jeondoh.router.infrastructure.repository;
 
-import com.jeondoh.queuecore.domain.DomainType;
+import com.jeondoh.core.common.dto.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;
 import com.jeondoh.router.api.dto.QueueConfigExists;
 import com.jeondoh.router.api.dto.QueueRunningMemberCheck;

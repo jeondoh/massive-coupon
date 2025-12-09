@@ -1,8 +1,8 @@
 package com.jeondoh.domainqueue.infrastructure.scheduler;
 
+import com.jeondoh.core.common.dto.DomainType;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigRepository;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueTransferRepository;
-import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

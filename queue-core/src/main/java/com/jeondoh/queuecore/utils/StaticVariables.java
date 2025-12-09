@@ -18,8 +18,4 @@ public class StaticVariables {
     // - 스케줄러 실행 주기
     public static final String CONFIG_TRANSFER_INTERVAL = "transferInterval";
 
-    // ========================================================================
-    // KEY값
-    public static final String CONFIG_KEY = "config";
-    public static final String TRAFFIC_KEY = "traffic";
 }

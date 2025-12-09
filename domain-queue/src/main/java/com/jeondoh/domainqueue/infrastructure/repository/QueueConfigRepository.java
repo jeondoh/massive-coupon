@@ -1,6 +1,6 @@
 package com.jeondoh.domainqueue.infrastructure.repository;
 
-import com.jeondoh.queuecore.domain.DomainType;
+import com.jeondoh.core.common.dto.DomainType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jeondoh.queuecore.utils.StaticVariables.CONFIG_KEY;
+import static com.jeondoh.core.common.util.StaticVariables.CONFIG_KEY;
 
 @Repository
 @RequiredArgsConstructor

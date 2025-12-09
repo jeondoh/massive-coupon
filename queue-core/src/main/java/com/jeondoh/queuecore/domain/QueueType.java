@@ -1,5 +1,6 @@
 package com.jeondoh.queuecore.domain;
 
+import com.jeondoh.core.common.dto.DomainType;
 import lombok.Getter;
 
 @Getter

@@ -1,12 +1,10 @@
-package com.jeondoh.queuecore.domain;
+package com.jeondoh.core.common.dto;
 
-import com.jeondoh.queuecore.utils.TimeHelper;
+import com.jeondoh.core.common.util.StaticVariables;
+import com.jeondoh.core.common.util.TimeHelper;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-
-import static com.jeondoh.queuecore.utils.StaticVariables.CONFIG_KEY;
-import static com.jeondoh.queuecore.utils.StaticVariables.TRAFFIC_KEY;
 
 @Getter
 public enum DomainType {
@@ -14,17 +12,17 @@ public enum DomainType {
     COUPON;
 
     public String getConfigKey(String resourceId) {
-        return String.format(CONFIG_KEY + ":%s:%s", this.name(), resourceId);
+        return String.format(StaticVariables.CONFIG_KEY + ":%s:%s", this.name(), resourceId);
     }
 
     public static String getDefaultConfigKey() {
         String name = DomainType.DEFAULT.name();
-        return String.format(CONFIG_KEY + ":%s:%s", name, name.toLowerCase());
+        return String.format(StaticVariables.CONFIG_KEY + ":%s:%s", name, name.toLowerCase());
     }
 
     public String getTrafficKey(String resourceId, LocalDateTime localDateTime) {
         String timeKey = TimeHelper.formatToTenSecondBucket(localDateTime);
-        return String.format(TRAFFIC_KEY + ":%s:%s:%s", this.name(), resourceId, timeKey);
+        return String.format(StaticVariables.TRAFFIC_KEY + ":%s:%s:%s", this.name(), resourceId, timeKey);
     }
 
     public String getDomainKey(String resourceId, String memberId) {

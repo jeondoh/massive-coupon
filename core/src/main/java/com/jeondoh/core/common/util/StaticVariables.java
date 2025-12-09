@@ -12,4 +12,9 @@ public final class StaticVariables {
     public static final String NAME_CLAIM_KEY = "username";
     public static final String AUTH_HEADER_PREFIX_KEY = "Authorization";
     public static final String AUTH_HEADER_PREFIX = "Bearer ";
+
+    // ========================================================================
+    // KEY값
+    public static final String CONFIG_KEY = "config";
+    public static final String TRAFFIC_KEY = "traffic";
 }
