@@ -1,6 +1,5 @@
 package com.jeondoh.router.domain.service;
 
-import com.jeondoh.queuecore.component.QueueConfigMap;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.exception.QueueConfigException;
 import com.jeondoh.router.api.dto.QueueConfigExists;
@@ -16,7 +15,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class QueueServiceImpl implements QueueService {
 
-    private final QueueConfigMap queueConfigMap;
     private final QueueLuaRepository queueLuaRepository;
 
     // Config 존재 여부 확인
@@ -30,10 +28,7 @@ public class QueueServiceImpl implements QueueService {
                 .next()
                 .switchIfEmpty(Mono.just(-1L))
                 .flatMap(result -> {
-                    if (result == 1L) {
-                        // 새로운 Config 생성
-                        queueConfigMap.saveConfigFromDuplicateDefaultConfig(domain, resourceId);
-                    } else if (result == -1L) {
+                    if (result == -1L) {
                         // default Config 필드 누락
                         log.error("Config 필드 누락: {}:{}", domain.name(), resourceId);
                         return Mono.error(QueueConfigException.notFoundConfigException(domain.name(), resourceId));

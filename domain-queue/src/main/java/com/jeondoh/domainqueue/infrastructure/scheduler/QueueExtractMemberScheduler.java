@@ -1,7 +1,7 @@
 package com.jeondoh.domainqueue.infrastructure.scheduler;
 
+import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigRepository;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueExtractRepository;
-import com.jeondoh.queuecore.component.QueueConfigMap;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -19,16 +19,16 @@ public class QueueExtractMemberScheduler {
 
     @Value("${queue.extract.timeout}")
     private long timeout;
-    private final QueueConfigMap queueConfigMap;
     private final QueueExtractRepository queueExtractRepository;
+    private final QueueConfigRepository queueConfigRepository;
 
     // running queue 멤버 제거
     // - 마지막 응답 heartbeat 시간(score)이 timeout밀리초 이상 차이나는 경우
     @Scheduled(fixedDelayString = "${queue.extract.interval}")
     public void extractMember() {
-        // domain에 해당하는 config key 조회
-        Set<String> configKeys = queueConfigMap.getAllConfigKeys();
-        for (String configKey : configKeys) {
+        // 모든 config 조회
+        Map<String, Map<String, String>> allConfigs = queueConfigRepository.getAllConfig();
+        for (String configKey : allConfigs.keySet()) {
             try {
                 processQueue(configKey);
             } catch (Exception e) {
