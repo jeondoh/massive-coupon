@@ -1,6 +1,7 @@
 package com.jeondoh.router.domain.service;
 
 import com.jeondoh.router.api.dto.QueueConfigExists;
+import com.jeondoh.router.api.dto.QueueRunningMemberCheck;
 import com.jeondoh.router.api.dto.QueueTargetMatch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,17 @@ public class RouterServiceImpl implements RouterService {
         QueueConfigExists queueConfig = QueueConfigExists.of(queueTargetMatch.domain(), queueTargetMatch.resourceId());
         return queueService.createConfigIfNotExists(queueConfig)
                 .then(queueService.checkQueueRequired(queueConfig));
+    }
+
+    // Running Queue 멤버 확인
+    @Override
+    public Mono<Boolean> checkMemberInRunningQueue(QueueTargetMatch queueTargetMatch, String memberId) {
+        QueueRunningMemberCheck queueRunningMemberCheck = QueueRunningMemberCheck.of(
+                queueTargetMatch.domain(),
+                queueTargetMatch.resourceId(),
+                memberId
+        );
+        return queueService.checkMemberInRunningQueue(queueRunningMemberCheck);
     }
 
 }

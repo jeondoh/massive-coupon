@@ -19,14 +19,11 @@ public class QueueExtractMemberScheduler {
 
     @Value("${queue.extract.timeout}")
     private long timeout;
-    @Value("${queue.token.key-prefix}")
-    private String tokenKeyPrefix;
     private final QueueConfigMap queueConfigMap;
     private final QueueExtractRepository queueExtractRepository;
 
     // running queue 멤버 제거
     // - 마지막 응답 heartbeat 시간(score)이 timeout밀리초 이상 차이나는 경우
-    // - 토큰도 함께 삭제
     @Scheduled(fixedDelayString = "${queue.extract.interval}")
     public void extractMember() {
         // domain에 해당하는 config key 조회
@@ -59,8 +56,7 @@ public class QueueExtractMemberScheduler {
         // timeout된 멤버 제거
         queueExtractRepository.extractTimeoutMembers(
                 runningKey,
-                timeoutScore,
-                tokenKeyPrefix
+                timeoutScore
         );
     }
 }

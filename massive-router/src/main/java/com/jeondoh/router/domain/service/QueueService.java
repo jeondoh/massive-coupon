@@ -1,6 +1,7 @@
 package com.jeondoh.router.domain.service;
 
 import com.jeondoh.router.api.dto.QueueConfigExists;
+import com.jeondoh.router.api.dto.QueueRunningMemberCheck;
 import reactor.core.publisher.Mono;
 
 public interface QueueService {
@@ -13,4 +14,7 @@ public interface QueueService {
     // - Waiting, Running Queue 크기 기반 체크
     // - RPM 기반 체크
     Mono<Boolean> checkQueueRequired(QueueConfigExists queueConfigExists);
+
+    // Running Queue 멤버 존재 여부 확인
+    Mono<Boolean> checkMemberInRunningQueue(QueueRunningMemberCheck queueRunningMemberCheck);
 }

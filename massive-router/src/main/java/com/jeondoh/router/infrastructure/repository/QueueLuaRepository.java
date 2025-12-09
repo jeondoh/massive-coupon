@@ -3,11 +3,13 @@ package com.jeondoh.router.infrastructure.repository;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.domain.QueueType;
 import com.jeondoh.router.api.dto.QueueConfigExists;
+import com.jeondoh.router.api.dto.QueueRunningMemberCheck;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -86,6 +88,18 @@ public class QueueLuaRepository {
                 CONFIG_TRAFFIC_RPM,
                 String.valueOf(trafficTTLSeconds)
         );
+    }
+
+    // Running Queue 멤버 존재 여부 확인
+    public Mono<Boolean> checkMemberInRunningQueue(QueueRunningMemberCheck queueRunningMemberCheck) {
+        DomainType domain = queueRunningMemberCheck.domain();
+        String resourceId = queueRunningMemberCheck.resourceId();
+        String runningKey = QueueType.RUNNING.getKey(domain, resourceId);
+        String domainKey = domain.getDomainKey(resourceId, queueRunningMemberCheck.memberId());
+
+        return reactiveRedisTemplate.opsForZSet()
+                .score(runningKey, domainKey)
+                .hasElement();
     }
 
 }

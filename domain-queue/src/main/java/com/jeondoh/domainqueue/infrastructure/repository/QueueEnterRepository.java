@@ -30,9 +30,7 @@ public class QueueEnterRepository {
                 enterQueue,
                 List.of(waitingKey, runningKey),
                 queueDomainKey.domainKey(),
-                String.valueOf(currentTime),
-                queueDomainKey.tokenKey(),
-                String.valueOf(queueDomainKey.tokenTTL())
+                String.valueOf(currentTime)
         );
 
         QueueWaitOrder queueWaitOrder = QueueWaitOrder.of(execute.get(0), execute.get(1), execute.get(2));

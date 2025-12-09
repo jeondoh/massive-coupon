@@ -15,8 +15,6 @@ import java.util.List;
 public class QueueTargetProperties {
     // 대기열 진입 체크 대상 URL
     private List<QueueTarget> targets = new ArrayList<>();
-    // 대기열 진입 후 토큰 체크 대상 URL
-    private List<QueueTarget> authorization = new ArrayList<>();
 
     @Getter
     @Setter

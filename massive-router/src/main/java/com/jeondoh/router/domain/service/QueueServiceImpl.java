@@ -4,6 +4,7 @@ import com.jeondoh.queuecore.component.QueueConfigMap;
 import com.jeondoh.queuecore.domain.DomainType;
 import com.jeondoh.queuecore.exception.QueueConfigException;
 import com.jeondoh.router.api.dto.QueueConfigExists;
+import com.jeondoh.router.api.dto.QueueRunningMemberCheck;
 import com.jeondoh.router.infrastructure.repository.QueueLuaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,5 +56,11 @@ public class QueueServiceImpl implements QueueService {
                     }
                     return Mono.just(false);
                 });
+    }
+
+    // Running Queue 멤버 존재 여부 확인
+    @Override
+    public Mono<Boolean> checkMemberInRunningQueue(QueueRunningMemberCheck queueRunningMemberCheck) {
+        return queueLuaRepository.checkMemberInRunningQueue(queueRunningMemberCheck);
     }
 }
