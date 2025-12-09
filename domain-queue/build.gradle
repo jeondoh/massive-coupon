@@ -11,4 +11,5 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation "org.apache.commons:commons-pool2:${COMMONS_POOL_VERSION}"
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
 }
