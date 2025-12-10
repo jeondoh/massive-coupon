@@ -24,9 +24,11 @@ public class QueueWaitOrderServiceImpl implements QueueWaitOrderService {
         String resourceId = queueDomainMember.resourceId();
         String memberId = queueDomainMember.memberId();
         String waitingKey = QueueType.WAITING.getKey(domain, resourceId);
+        String runningKey = QueueType.RUNNING.getKey(domain, resourceId);
 
         QueueWaitOrder queueWaitOrder = queueWaitOrderRepository.waitOrder(
                 waitingKey,
+                runningKey,
                 domain.getDomainKey(resourceId, memberId)
         );
 

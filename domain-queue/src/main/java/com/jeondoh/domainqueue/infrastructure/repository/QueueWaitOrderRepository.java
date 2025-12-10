@@ -17,10 +17,10 @@ public class QueueWaitOrderRepository {
 
     // 멤버의 대기순번, 대기자 수 가져오기
     // - 대기 순번 및 전체 대기자 수 반환
-    public QueueWaitOrder waitOrder(String waitingKey, String domainKey) {
+    public QueueWaitOrder waitOrder(String waitingKey, String runningKey, String domainKey) {
         List<Long> execute = stringRedisTemplate.execute(
                 waitOrder,
-                List.of(waitingKey),
+                List.of(waitingKey, runningKey),
                 domainKey
         );
 

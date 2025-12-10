@@ -31,7 +31,10 @@ public class QueueRunningRepository {
 
     // running queue에서 멤버 제거
     public void removeMember(RemoveRunningQueueMember removeRunningQueueMember) {
-        redisTemplate.opsForZSet().remove(removeRunningQueueMember.runningKey(), removeRunningQueueMember.memberId());
+        redisTemplate.opsForZSet().remove(
+                removeRunningQueueMember.runningKey(),
+                removeRunningQueueMember.domainKey()
+        );
     }
 
 }
