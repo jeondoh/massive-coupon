@@ -7,9 +7,9 @@ import com.jeondoh.domainqueue.api.dto.QueueDomainMember;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrderRequest;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrderResponse;
 import com.jeondoh.domainqueue.domain.service.QueueWaitOrderService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,10 +27,10 @@ public class QueueWaitOrderController {
     // 대기순번 가져오기
     @GetMapping("/order")
     public ResponseApi<QueueWaitOrderResponse> memberWaitOrder(
-            ServerHttpRequest request,
+            HttpServletRequest request,
             @Valid QueueWaitOrderRequest queueWaitOrderRequest
     ) {
-        JwtToken jwtToken = jwtDecoder.decode(request.getHeaders().getFirst(AUTH_HEADER_PREFIX_KEY));
+        JwtToken jwtToken = jwtDecoder.decode(request.getHeader(AUTH_HEADER_PREFIX_KEY));
         QueueDomainMember queueWaitOrder = QueueDomainMember.of(
                 jwtToken.memberId(),
                 queueWaitOrderRequest.domain(),
