@@ -1,4 +1,4 @@
-package com.jeondoh.core.common.infrastructure.rabbitmq.coupon;
+package com.jeondoh.domainqueue.infrastructure.rabbitmq;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
