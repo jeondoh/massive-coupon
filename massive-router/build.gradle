@@ -1,9 +1,14 @@
 description = 'massive-router'
 
+ext {
+    COMMONS_POOL_VERSION = "2.12.1"
+}
+
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':queue-core')
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+    implementation "org.apache.commons:commons-pool2:${COMMONS_POOL_VERSION}"
 }
