@@ -1,7 +1,7 @@
 package com.jeondoh.apiserver.coupon.infrastructure.rabbitmq;
 
 import com.jeondoh.core.common.dto.coupon.CouponIssuedRemoveAtRunningQueueMessage;
-import com.jeondoh.core.common.infrastructure.rabbitmq.RabbitmqSendHelper;
+import com.jeondoh.core.common.infrastructure.rabbitmq.RabbitMQSendHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class CouponQueueRemoveRabbitMqSenderImpl implements CouponQueueRemoveRabbitmqSender {
 
     public CouponQueueRemoveRabbitMqSenderImpl(
-            RabbitmqSendHelper rabbitmqSendHelper,
+            RabbitMQSendHelper rabbitmqSendHelper,
             @Value("${spring.rabbitmq.queues.coupon-queue-remove.exchange-name}") String exchangeName,
             @Value("${spring.rabbitmq.queues.coupon-queue-remove.routing-key}") String routingKey
     ) {
@@ -18,7 +18,7 @@ public class CouponQueueRemoveRabbitMqSenderImpl implements CouponQueueRemoveRab
         this.routingKey = routingKey;
     }
 
-    private final RabbitmqSendHelper rabbitmqSendHelper;
+    private final RabbitMQSendHelper rabbitmqSendHelper;
     private final String exchangeName;
     private final String routingKey;
 
