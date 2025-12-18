@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
         "com.jeondoh.apiserver",
         "com.jeondoh.core.common.component",
         "com.jeondoh.core.servlet.component",
-        "com.jeondoh.core.common.infrastructure.rabbitmq"
+        "com.jeondoh.core.common.infrastructure"
 })
 public class ApiServerApplication {
 
