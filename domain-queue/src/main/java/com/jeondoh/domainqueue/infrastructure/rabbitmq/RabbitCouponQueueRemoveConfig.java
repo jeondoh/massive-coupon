@@ -34,6 +34,15 @@ public class RabbitCouponQueueRemoveConfig {
     @Value("${spring.rabbitmq.queues.coupon-queue-remove.maxLength}")
     private int maxLength;
 
+    @Value("${spring.rabbitmq.queues.coupon-queue-remove.dlq.name}")
+    private String dlqName;
+
+    @Value("${spring.rabbitmq.queues.coupon-queue-remove.dlq.routing-key}")
+    private String dlqRoutingKey;
+
+    @Value("${spring.rabbitmq.queues.coupon-queue-remove.dlq.topic-dlx}")
+    private String dlqTopicDlx;
+
     @Bean
     public SimpleMessageListenerContainer couponQueueRemoveContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -50,7 +59,24 @@ public class RabbitCouponQueueRemoveConfig {
         return QueueBuilder.durable(queueName)
                 .ttl(ttl)
                 .maxLength(maxLength)
+                .withArgument("x-dead-letter-exchange", dlqTopicDlx)
+                .withArgument("x-dead-letter-routing-key", dlqRoutingKey)
                 .build();
+    }
+
+    @Bean
+    public TopicExchange deadLetterQueueRemoveQueueExchange() {
+        return new TopicExchange(dlqTopicDlx);
+    }
+
+    @Bean
+    public Queue deadLetterQueueRemoveQueue() {
+        return QueueBuilder.durable(dlqName).build();
+    }
+
+    @Bean
+    public Binding deadLetterQueueRemoveQueueBinding() {
+        return BindingBuilder.bind(deadLetterQueueRemoveQueue()).to(deadLetterQueueRemoveQueueExchange()).with(dlqRoutingKey);
     }
 
     @Bean
