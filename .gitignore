@@ -82,6 +82,7 @@ replay_pid*
 Icon
 
 .claude
+CLAUDE.md
 
 # Thumbnails
 ._*
@@ -110,6 +111,7 @@ Temporary Items
 
 # custom
 .gradle
-*.yml
+application*.yml
 *.properties
 build/
+.env.*
