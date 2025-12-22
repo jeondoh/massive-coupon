@@ -15,7 +15,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"memberId", "coupon_detail_id"})
+        @UniqueConstraint(
+                name = "uk_coupon_member_detail",
+                columnNames = {"memberId", "coupon_detail_id"}
+        )
 })
 public class Coupon extends BaseEntity {
 

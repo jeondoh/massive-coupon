@@ -68,15 +68,9 @@ public class CouponDetail extends BaseEntity {
     public void validatePublished() {
         if (LocalDateTime.now().isBefore(publishedAt)) {
             throw CouponException.notPublishedException();
+        } else if (LocalDateTime.now().isAfter(expiredAt)) {
+            throw CouponException.expiredException();
         }
-    }
-
-    // 쿠폰 재고 차감
-    public void decreaseRemainQuantity() {
-        if (remainQuantity <= 0) {
-            throw CouponException.soldOutException();
-        }
-        remainQuantity -= 1;
     }
 
 }

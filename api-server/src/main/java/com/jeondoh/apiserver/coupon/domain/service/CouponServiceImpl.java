@@ -10,6 +10,7 @@ import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponSearchQueryDslRepository;
 import com.jeondoh.core.servlet.PagingResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -47,34 +48,27 @@ public class CouponServiceImpl implements CouponService {
         String memberId = issueCouponRequest.memberId();
         Long couponDetailId = issueCouponRequest.couponDetailId();
 
-        // 쿠폰 발급 중복체크
-        Long duplicateCount = couponRepository.findDuplicateIssuedCouponWithLock(
-                couponDetailId,
-                Long.parseLong(memberId)
-        );
-        if (duplicateCount > 0) {
-            throw CouponException.duplicateIssueException();
-        }
-
-        CouponDetail couponDetail = couponDetailRepository.findByIdWithLock(couponDetailId)
+        CouponDetail couponDetail = couponDetailRepository.findById(couponDetailId)
                 .orElseThrow(CouponException::notFoundException);
 
-        // 발행일자 이전에 발급 요청시 예외
+        // 발행일자 검증
         couponDetail.validatePublished();
+
+        // 재고 차감
+        int updated = couponDetailRepository.decreaseRemainQuantity(couponDetailId);
+        if (updated == 0) {
+            throw CouponException.soldOutException();
+        }
 
         // 쿠폰 발급
         Coupon coupon = Coupon.issuedCoupon(memberId, couponDetail);
-        Coupon savedCoupon = couponRepository.save(coupon);
-
-        // 쿠폰 재고 차감
-        couponDetail.decreaseRemainQuantity();
-
-        // MQ - 대기열 큐 삭제 메시지 전송
-        couponQueueRemoveRabbitmqSender.sendRemoveRunningQueue(
-                issueCouponRequest.resourceId(),
-                issueCouponRequest.memberId()
-        );
-        return IssueCouponResponse.of(savedCoupon.getId(), savedCoupon.getStatus());
+        try {
+            Coupon savedCoupon = couponRepository.save(coupon);
+            return IssueCouponResponse.of(savedCoupon.getId(), savedCoupon.getStatus());
+        } catch (DataIntegrityViolationException e) {
+            // 유니크 제약 위반, 중복 발행 예외
+            throw CouponException.expiredException();
+        }
     }
 
     // 쿠폰 사용
