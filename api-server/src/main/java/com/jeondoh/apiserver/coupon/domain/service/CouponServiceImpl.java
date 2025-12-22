@@ -67,7 +67,7 @@ public class CouponServiceImpl implements CouponService {
             return IssueCouponResponse.of(savedCoupon.getId(), savedCoupon.getStatus());
         } catch (DataIntegrityViolationException e) {
             // 유니크 제약 위반, 중복 발행 예외
-            throw CouponException.expiredException();
+            throw CouponException.duplicateIssueException();
         }
     }
 
