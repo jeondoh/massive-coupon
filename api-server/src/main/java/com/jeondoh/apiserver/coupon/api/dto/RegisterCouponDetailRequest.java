@@ -26,6 +26,8 @@ public record RegisterCouponDetailRequest(
 
         Long minPaymentAmount,
 
+        LocalDateTime startDate,
+
         @NotNull(message = "쿠폰 만료일자 필수")
         LocalDateTime expiredAt
 ) {
