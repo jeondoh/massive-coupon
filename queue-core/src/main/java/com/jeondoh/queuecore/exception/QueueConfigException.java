@@ -9,11 +9,7 @@ public class QueueConfigException extends BaseException {
         super(code, message, statusCode, detailMessage);
     }
 
-    public static QueueConfigException luaFileIoException() {
-        return new QueueConfigException("Q_CONFIG_01", "LUA IO 파일 오류", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     public static QueueConfigException notFoundConfigException(String... detailMessage) {
-        return new QueueConfigException("Q_CONFIG_02", "설정값이 누락되었습니다.", HttpStatus.INTERNAL_SERVER_ERROR, detailMessage);
+        return new QueueConfigException("Q_CONFIG_01", "설정값이 누락되었습니다.", HttpStatus.INTERNAL_SERVER_ERROR, detailMessage);
     }
 }
