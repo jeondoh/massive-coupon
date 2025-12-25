@@ -36,14 +36,17 @@ public class Coupon extends BaseEntity {
     @JoinColumn(name = "coupon_detail_id")
     private CouponDetail couponDetail;
 
+    private Long issueOrder;
+
     private LocalDateTime usedAt;
 
     // 쿠폰 발급
-    public static Coupon issuedCoupon(String memberId, CouponDetail couponDetail) {
+    public static Coupon issuedCoupon(String memberId, Long order, CouponDetail couponDetail) {
         return Coupon.builder()
                 .memberId(Long.parseLong(memberId))
                 .status(CouponStatus.ISSUED)
                 .couponDetail(couponDetail)
+                .issueOrder(order)
                 .build();
     }
 

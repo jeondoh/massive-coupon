@@ -45,7 +45,7 @@ public class CouponController {
 
     // 쿠폰 발급
     @PostMapping("/{couponDetailId}")
-    public ResponseApi<IssueCouponResponse> issueCoupon(
+    public ResponseApi<Void> issueCoupon(
             HttpServletRequest httpServletRequest,
             @PathVariable Long couponDetailId,
             @Valid @RequestBody CouponIssueRequest couponIssuedRequest
@@ -56,8 +56,8 @@ public class CouponController {
                 jwtToken.memberId(),
                 couponIssuedRequest.resourceId()
         );
-        IssueCouponResponse issueCouponResponse = couponService.issueCoupon(issueCouponRequest);
-        return ResponseApi.ok(issueCouponResponse);
+        couponService.issueCoupon(issueCouponRequest);
+        return ResponseApi.ok();
     }
 
     // 쿠폰 사용

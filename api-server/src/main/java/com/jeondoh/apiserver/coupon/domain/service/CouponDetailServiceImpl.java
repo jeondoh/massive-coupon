@@ -1,6 +1,5 @@
 package com.jeondoh.apiserver.coupon.domain.service;
 
-import com.jeondoh.apiserver.core.dto.CouponDetailCache;
 import com.jeondoh.apiserver.coupon.api.dto.*;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetail;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRepository;
@@ -64,11 +63,7 @@ public class CouponDetailServiceImpl implements CouponDetailService {
         CouponDetail saveCoupon = couponDetailRepository.save(couponDetail);
         // redis 저장
         Long couponDetailId = saveCoupon.getId();
-        CouponDetailCache couponDetailCache = CouponDetailCache.of(
-                registerCouponDetailRequest,
-                couponDetailId,
-                memberId
-        );
+        CouponDetailCache couponDetailCache = CouponDetailCache.of(registerCouponDetailRequest, couponDetailId);
         couponRedisRepository.registerCouponDetail(couponDetailCache);
 
         return RegisterCouponDetailResponse.of(couponDetailId);

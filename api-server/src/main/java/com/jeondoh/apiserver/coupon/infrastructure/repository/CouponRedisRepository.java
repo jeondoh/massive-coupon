@@ -1,6 +1,6 @@
 package com.jeondoh.apiserver.coupon.infrastructure.repository;
 
-import com.jeondoh.apiserver.core.dto.CouponDetailCache;
+import com.jeondoh.apiserver.coupon.api.dto.CouponDetailCache;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -51,10 +51,10 @@ public class CouponRedisRepository {
         );
 
         // 중복발급 방지용
-        String memberKey = COUPON_ISSUED_MEMBER_KEY + ":" + couponDetailCache.publisherId();
+        String memberKey = COUPON_ISSUED_MEMBER_KEY + ":" + couponDetailCache.couponDetailId();
         stringRedisTemplate.opsForSet().add(
                 memberKey,
-                couponDetailCache.publisherId()
+                "0"
         );
         stringRedisTemplate.expire(memberKey, ttl, TimeUnit.SECONDS);
     }

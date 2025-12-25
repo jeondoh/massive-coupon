@@ -1,12 +1,9 @@
-package com.jeondoh.apiserver.core.dto;
-
-import com.jeondoh.apiserver.coupon.api.dto.RegisterCouponDetailRequest;
+package com.jeondoh.apiserver.coupon.api.dto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public record CouponDetailCache(
-        String publisherId,
         Long couponDetailId,
         LocalDateTime publishedAt,
         LocalDateTime expiredAt,
@@ -14,10 +11,9 @@ public record CouponDetailCache(
         String expiredAtToSecond,
         String totalQuantity
 ) {
-    public static CouponDetailCache of(RegisterCouponDetailRequest request, long savedId, String memberId) {
+    public static CouponDetailCache of(RegisterCouponDetailRequest request, long savedId) {
         LocalDateTime startDate = request.startDate() != null ? request.startDate() : LocalDateTime.now();
         return new CouponDetailCache(
-                memberId,
                 savedId,
                 startDate,
                 request.expiredAt(),

@@ -4,7 +4,6 @@ import com.jeondoh.apiserver.core.model.BaseEntity;
 import com.jeondoh.apiserver.coupon.api.dto.CouponType;
 import com.jeondoh.apiserver.coupon.api.dto.DiscountPolicy;
 import com.jeondoh.apiserver.coupon.api.dto.RegisterCouponDetailRequest;
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -59,18 +58,9 @@ public class CouponDetail extends BaseEntity {
                 .couponName(request.couponName())
                 .discountPolicy(discountPolicy)
                 .publisherId(Long.parseLong(publisherId))
-                .publishedAt(LocalDateTime.now())
+                .publishedAt(request.startDate() != null ? request.startDate() : LocalDateTime.now())
                 .expiredAt(request.expiredAt())
                 .build();
-    }
-
-    // 쿠폰 발행일자 검증
-    public void validatePublished() {
-        if (LocalDateTime.now().isBefore(publishedAt)) {
-            throw CouponException.notPublishedException();
-        } else if (LocalDateTime.now().isAfter(expiredAt)) {
-            throw CouponException.expiredException();
-        }
     }
 
 }
