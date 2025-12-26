@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,4 +24,9 @@ public final class TimeHelper {
 
         return bucketTime.format(BUCKET_FORMATTER);
     }
+
+    public static Long dateTimeToEpochSecond(LocalDateTime dateTime) {
+        return dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+    }
+
 }
