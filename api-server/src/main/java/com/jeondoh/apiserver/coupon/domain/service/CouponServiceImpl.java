@@ -3,6 +3,8 @@ package com.jeondoh.apiserver.coupon.domain.service;
 import com.jeondoh.apiserver.coupon.api.dto.*;
 import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
 import com.jeondoh.apiserver.coupon.domain.model.Coupon;
+import com.jeondoh.apiserver.coupon.domain.model.CouponDetailHash;
+import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRedisRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponLuaRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponSearchQueryDslRepository;
@@ -22,6 +24,7 @@ public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
     private final CouponSearchQueryDslRepository couponSearchQueryDslRepository;
+    private final CouponDetailRedisRepository couponDetailRedisRepository;
     private final CouponLuaRepository couponLuaRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -43,15 +46,24 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void issueCoupon(IssueCouponRequest issueCouponRequest) {
-        String memberId = issueCouponRequest.memberId();
-        Long couponDetailId = issueCouponRequest.couponDetailId();
+        // 쿠폰 데이터 가져오기
+        CouponDetailHash couponDetailHash = couponDetailRedisRepository.findCouponDetailMetaData(
+                issueCouponRequest.couponDetailId()
+        );
 
-        // 쿠폰 발급 검증, 발행 처리
-        IssueCoupon issueCoupon = IssueCoupon.of(memberId, couponDetailId.toString());
-        Long memberCouponOrder = couponLuaRepository.issuedCoupon(issueCoupon);
+        // 쿠폰 일자 검증
+        couponDetailHash.validateCoupon();
+
+        // 쿠폰 발행 처리
+        CouponDetailMetaData metaData = CouponDetailMetaData.of(couponDetailHash, issueCouponRequest.memberId());
+        Long memberCouponOrder = couponLuaRepository.issuedCoupon(metaData);
 
         // 유저 쿠폰 발급 비동기 요청
-        IssueCouponEvent issueCouponEvent = IssueCouponEvent.of(memberId, couponDetailId, memberCouponOrder);
+        IssueCouponEvent issueCouponEvent = IssueCouponEvent.of(
+                metaData.memberId(),
+                metaData.couponDetailId(),
+                memberCouponOrder
+        );
         eventPublisher.publishEvent(issueCouponEvent);
     }
 

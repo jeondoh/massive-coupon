@@ -52,7 +52,7 @@ public class CouponController {
     ) {
         JwtToken jwtToken = jwtDecoder.decode(httpServletRequest.getHeader(AUTH_HEADER_PREFIX_KEY));
         IssueCouponRequest issueCouponRequest = IssueCouponRequest.of(
-                couponDetailId,
+                couponDetailId.toString(),
                 jwtToken.memberId(),
                 couponIssuedRequest.resourceId()
         );

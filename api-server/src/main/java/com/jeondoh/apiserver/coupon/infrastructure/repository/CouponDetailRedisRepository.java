@@ -1,62 +1,62 @@
 package com.jeondoh.apiserver.coupon.infrastructure.repository;
 
-import com.jeondoh.apiserver.coupon.api.dto.CouponDetailCache;
+import com.jeondoh.apiserver.coupon.api.dto.CouponDetailMetaData;
+import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
+import com.jeondoh.apiserver.coupon.domain.model.CouponDetailHash;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.jeondoh.apiserver.core.util.StaticVariables.*;
-
 @Repository
-public class CouponRedisRepository {
+public class CouponDetailRedisRepository {
 
-    public CouponRedisRepository(
+    public CouponDetailRedisRepository(
             @Value("${coupon.detail.hash-timeout-days}") int couponDetailTimeoutDays,
+            CouponDetailCrudRepository couponDetailRedisRepository,
             StringRedisTemplate stringRedisTemplate
     ) {
         this.couponDetailTimeoutDays = couponDetailTimeoutDays;
+        this.couponDetailRedisRepository = couponDetailRedisRepository;
         this.stringRedisTemplate = stringRedisTemplate;
     }
 
     private final int couponDetailTimeoutDays;
+    private final CouponDetailCrudRepository couponDetailRedisRepository;
     private final StringRedisTemplate stringRedisTemplate;
 
     // 쿠폰 정보 등록
-    public void registerCouponDetail(CouponDetailCache couponDetailCache) {
+    public void registerCouponDetail(CouponDetailMetaData couponDetailMetaData) {
         // 만료 시간 지정
         long ttl = Duration.ofDays(couponDetailTimeoutDays).toSeconds();
 
         // 쿠폰 정보 저장
-        String detailKey = COUPON_DETAIL_KEY + ":" + couponDetailCache.couponDetailId();
-        stringRedisTemplate.opsForHash().putAll(
-                detailKey,
-                Map.of(
-                        "publishedAt", couponDetailCache.publishedAtToSecond(),
-                        "expiredAt", couponDetailCache.expiredAtToSecond(),
-                        "totalQuantity", couponDetailCache.totalQuantity()
-                )
-        );
-        stringRedisTemplate.expire(detailKey, ttl, TimeUnit.SECONDS);
+        CouponDetailHash couponDetailHash = CouponDetailHash.of(couponDetailMetaData, ttl);
+        couponDetailRedisRepository.save(couponDetailHash);
 
         // 쿠폰 재고 저장
         stringRedisTemplate.opsForValue().set(
-                COUPON_ISSUED_QUANTITY_KEY + ":" + couponDetailCache.couponDetailId(),
+                couponDetailMetaData.keys().issuedQuantityKey(),
                 "0",
                 ttl,
                 TimeUnit.SECONDS
         );
 
         // 중복발급 방지용
-        String memberKey = COUPON_ISSUED_MEMBER_KEY + ":" + couponDetailCache.couponDetailId();
+        String memberKey = couponDetailMetaData.keys().issuedMemberKey();
         stringRedisTemplate.opsForSet().add(
                 memberKey,
                 "0"
         );
         stringRedisTemplate.expire(memberKey, ttl, TimeUnit.SECONDS);
+    }
+
+    // 쿠폰 상세 메타데이터(캐싱 데이터) 가져오기
+    public CouponDetailHash findCouponDetailMetaData(String couponDetailId) {
+        return couponDetailRedisRepository.findById(couponDetailId)
+                .orElseThrow(() -> CouponException.notFoundException("id: " + couponDetailId));
     }
 
 

@@ -2,9 +2,9 @@ package com.jeondoh.apiserver.coupon.domain.service;
 
 import com.jeondoh.apiserver.coupon.api.dto.*;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetail;
+import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRedisRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailSearchQueryDslRepository;
-import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponRedisRepository;
 import com.jeondoh.core.servlet.PagingResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CouponDetailServiceImpl implements CouponDetailService {
 
-    private final CouponRedisRepository couponRedisRepository;
+    private final CouponDetailRedisRepository couponDetailRedisRepository;
     private final CouponDetailRepository couponDetailRepository;
     private final CouponDetailSearchQueryDslRepository couponDetailSearchQueryDslRepository;
 
@@ -63,8 +63,12 @@ public class CouponDetailServiceImpl implements CouponDetailService {
         CouponDetail saveCoupon = couponDetailRepository.save(couponDetail);
         // redis 저장
         Long couponDetailId = saveCoupon.getId();
-        CouponDetailCache couponDetailCache = CouponDetailCache.of(registerCouponDetailRequest, couponDetailId);
-        couponRedisRepository.registerCouponDetail(couponDetailCache);
+        CouponDetailMetaData couponDetailMetaData = CouponDetailMetaData.of(
+                registerCouponDetailRequest,
+                memberId,
+                couponDetailId.toString()
+        );
+        couponDetailRedisRepository.registerCouponDetail(couponDetailMetaData);
 
         return RegisterCouponDetailResponse.of(couponDetailId);
     }

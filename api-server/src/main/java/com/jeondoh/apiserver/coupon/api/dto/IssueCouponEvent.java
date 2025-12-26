@@ -5,7 +5,7 @@ public record IssueCouponEvent(
         Long couponDetailId,
         Long order
 ) {
-    public static IssueCouponEvent of(String memberId, Long couponDetailId, Long order) {
-        return new IssueCouponEvent(memberId, couponDetailId, order);
+    public static IssueCouponEvent of(String memberId, String couponDetailId, Long order) {
+        return new IssueCouponEvent(memberId, Long.parseLong(couponDetailId), order);
     }
 }
