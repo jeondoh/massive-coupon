@@ -1,34 +1,33 @@
 package com.jeondoh.apiserver.coupon.infrastructure.rabbitmq;
 
 import com.jeondoh.core.common.dto.coupon.CouponIssuedRemoveAtRunningQueueMessage;
-import com.jeondoh.core.common.infrastructure.rabbitmq.RabbitMQSendHelper;
+import com.jeondoh.core.common.infrastructure.rabbitmq.RabbitMQProducer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CouponQueueRemoveRabbitMqSenderImpl implements CouponQueueRemoveRabbitmqSender {
+public class CouponQueueRemoveProducer {
 
-    public CouponQueueRemoveRabbitMqSenderImpl(
-            RabbitMQSendHelper rabbitmqSendHelper,
-            @Value("${spring.rabbitmq.queues.coupon-queue-remove.exchange-name}") String exchangeName,
-            @Value("${spring.rabbitmq.queues.coupon-queue-remove.routing-key}") String routingKey
+    public CouponQueueRemoveProducer(
+            RabbitMQProducer rabbitmqProducer,
+            @Value("${rabbitmq.queues.coupon-queue-remove.exchange-name}") String exchangeName,
+            @Value("${rabbitmq.queues.coupon-queue-remove.routing-key}") String routingKey
     ) {
-        this.rabbitmqSendHelper = rabbitmqSendHelper;
+        this.rabbitmqProducer = rabbitmqProducer;
         this.exchangeName = exchangeName;
         this.routingKey = routingKey;
     }
 
-    private final RabbitMQSendHelper rabbitmqSendHelper;
+    private final RabbitMQProducer rabbitmqProducer;
     private final String exchangeName;
     private final String routingKey;
 
     // running queue 멤버 제거 요청
-    @Override
     public void sendRemoveRunningQueue(String resourceId, String memberId) {
         CouponIssuedRemoveAtRunningQueueMessage message = CouponIssuedRemoveAtRunningQueueMessage.of(
                 resourceId,
                 memberId
         );
-        rabbitmqSendHelper.sendMessage(exchangeName, routingKey, message);
+        rabbitmqProducer.sendMessage(exchangeName, routingKey, message);
     }
 }
