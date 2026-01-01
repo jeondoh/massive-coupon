@@ -1,5 +1,6 @@
 package com.jeondoh.core.common.infrastructure.rabbitmq;
 
+import com.jeondoh.core.common.exception.BaseCoreException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RabbitMQSendHelper {
+public class RabbitMQProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -20,6 +21,7 @@ public class RabbitMQSendHelper {
         } catch (AmqpException e) {
             log.error("[RabbitMQ] sendMessage 실패 exchange: {}, routingKey: {}", exchange, routingKey);
             log.error(e.getMessage(), e);
+            throw BaseCoreException.amqpProduceException();
         }
     }
 }
