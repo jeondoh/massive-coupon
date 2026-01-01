@@ -7,40 +7,43 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class RabbitCouponQueueRemoveConfig {
+import static com.jeondoh.core.common.util.StaticVariables.DLQ_EXCHANGE_KEY;
+import static com.jeondoh.core.common.util.StaticVariables.DLQ_ROUTING_KEY;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.queue-name}")
+@Configuration
+public class CouponQueueRemoveRabbitMQConfig {
+
+    @Value("${rabbitmq.queues.coupon-queue-remove.queue-name}")
     private String queueName;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.routing-key}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.routing-key}")
     private String routingKey;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.exchange-name}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.exchange-name}")
     private String exchangeName;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.prefetch-count}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.prefetch-count}")
     private int prefetchCount;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.concurrent-consumers}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.concurrent-consumers}")
     private int concurrentConsumers;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.max-concurrent-consumers}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.max-concurrent-consumers}")
     private int maxConcurrentConsumers;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.ttl}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.ttl}")
     private int ttl;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.maxLength}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.maxLength}")
     private int maxLength;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.dlq.name}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.dlq.name}")
     private String dlqName;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.dlq.routing-key}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.dlq.routing-key}")
     private String dlqRoutingKey;
 
-    @Value("${spring.rabbitmq.queues.coupon-queue-remove.dlq.topic-dlx}")
+    @Value("${rabbitmq.queues.coupon-queue-remove.dlq.topic-dlx}")
     private String dlqTopicDlx;
 
     @Bean
@@ -59,8 +62,8 @@ public class RabbitCouponQueueRemoveConfig {
         return QueueBuilder.durable(queueName)
                 .ttl(ttl)
                 .maxLength(maxLength)
-                .withArgument("x-dead-letter-exchange", dlqTopicDlx)
-                .withArgument("x-dead-letter-routing-key", dlqRoutingKey)
+                .withArgument(DLQ_EXCHANGE_KEY, dlqTopicDlx)
+                .withArgument(DLQ_ROUTING_KEY, dlqRoutingKey)
                 .build();
     }
 
