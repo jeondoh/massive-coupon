@@ -17,4 +17,10 @@ public final class StaticVariables {
     // KEY값
     public static final String CONFIG_KEY = "config";
     public static final String TRAFFIC_KEY = "traffic";
+
+    // ========================================================================
+    // MQ Argument
+    public static final String DLQ_EXCHANGE_KEY = "x-dead-letter-exchange";
+    public static final String DLQ_ROUTING_KEY = "x-dead-letter-routing-key";
+
 }
