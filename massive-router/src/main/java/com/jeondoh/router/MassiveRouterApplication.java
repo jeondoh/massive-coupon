@@ -5,9 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
         "com.jeondoh.router",
-        "com.jeondoh.core.common.component",
-        "com.jeondoh.core.reactive.component",
-        "com.jeondoh.queuecore.component"
+        "com.jeondoh.core.common",
+        "com.jeondoh.core.reactive"
 })
 public class MassiveRouterApplication {
 
