@@ -23,9 +23,6 @@ public class CouponDetail extends BaseEntity {
     // 발행 수량
     private Long quantity;
 
-    // 남은 수량
-    private Long remainQuantity;
-
     // 쿠폰명
     private String couponName;
 
@@ -53,7 +50,6 @@ public class CouponDetail extends BaseEntity {
 
         return CouponDetail.builder()
                 .quantity(request.quantity())
-                .remainQuantity(request.quantity())
                 .couponName(request.couponName())
                 .discountPolicy(discountPolicy)
                 .publisherId(Long.parseLong(publisherId))
