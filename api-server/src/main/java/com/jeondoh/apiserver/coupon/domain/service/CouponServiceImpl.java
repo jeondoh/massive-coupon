@@ -1,16 +1,17 @@
 package com.jeondoh.apiserver.coupon.domain.service;
 
 import com.jeondoh.apiserver.coupon.api.dto.*;
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
-import com.jeondoh.apiserver.coupon.domain.model.Coupon;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetailHash;
+import com.jeondoh.apiserver.coupon.infrastructure.rabbitmq.CouponIssueProducer;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRedisRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponLuaRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponSearchQueryDslRepository;
 import com.jeondoh.core.servlet.PagingResponse;
+import com.jeondoh.core.servlet.dto.CouponIssuePayload;
+import com.jeondoh.core.servlet.exception.CouponException;
+import com.jeondoh.core.servlet.model.Coupon;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,7 +27,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponSearchQueryDslRepository couponSearchQueryDslRepository;
     private final CouponDetailRedisRepository couponDetailRedisRepository;
     private final CouponLuaRepository couponLuaRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final CouponIssueProducer couponIssueProducer;
 
     // 쿠폰 목록 조회
     @Override
@@ -58,13 +59,14 @@ public class CouponServiceImpl implements CouponService {
         CouponDetailMetaData metaData = CouponDetailMetaData.of(couponDetailHash, issueCouponRequest.memberId());
         Long memberCouponOrder = couponLuaRepository.issuedCoupon(metaData);
 
-        // 유저 쿠폰 발급 비동기 요청
-        IssueCouponEvent issueCouponEvent = IssueCouponEvent.of(
+        // 유저 쿠폰 발급 요청
+        CouponIssuePayload couponIssuePayload = CouponIssuePayload.of(
+                issueCouponRequest.resourceId(),
                 metaData.memberId(),
                 metaData.couponDetailId(),
                 memberCouponOrder
         );
-        eventPublisher.publishEvent(issueCouponEvent);
+        couponIssueProducer.sendMessage(couponIssuePayload);
     }
 
     // 쿠폰 사용
