@@ -1,4 +1,29 @@
 services:
+  # Massive Router
+  massive-router:
+    build:
+      context: .
+      dockerfile: massive-router/Dockerfile
+    container_name: massive-coupon-massive-router
+    ports:
+      - "8080:8080"
+    networks:
+      - massive-coupon-network
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+
   # API Server
   api-server:
     build:
@@ -12,7 +37,57 @@ services:
     env_file:
       - .env.prod
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://127.0.0.1:8081/actuator/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+
+  # Domain Queue
+  domain-queue:
+    build:
+      context: .
+      dockerfile: domain-queue/Dockerfile
+    container_name: domain-queue
+    ports:
+      - "8082:8082"
+    networks:
+      - massive-coupon-network
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+
+  # coupon issue server
+  coupon-issue-server:
+    build:
+      context: .
+      dockerfile: coupon-issue-server/Dockerfile
+    container_name: coupon-issue-server
+    ports:
+      - "8084:8084"
+    networks:
+      - massive-coupon-network
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8084/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -27,4 +102,3 @@ services:
 networks:
   massive-coupon-network:
     driver: bridge
-
