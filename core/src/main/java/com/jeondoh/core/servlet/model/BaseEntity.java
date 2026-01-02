@@ -1,4 +1,4 @@
-package com.jeondoh.apiserver.core.model;
+package com.jeondoh.core.servlet.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,8 +1,8 @@
 package com.jeondoh.domainqueue.api.dto;
 
+import com.jeondoh.core.common.dto.CouponIssuedRemoveAtRunningQueueMessage;
 import com.jeondoh.core.common.dto.DomainType;
-import com.jeondoh.core.common.dto.coupon.CouponIssuedRemoveAtRunningQueueMessage;
-import com.jeondoh.queuecore.domain.QueueType;
+import com.jeondoh.core.common.dto.QueueType;
 
 public record RemoveRunningQueueMember(
         String runningKey,

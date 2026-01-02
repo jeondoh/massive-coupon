@@ -1,9 +1,10 @@
 package com.jeondoh.domainqueue.infrastructure.scheduler;
 
 import com.jeondoh.core.common.dto.DomainType;
+import com.jeondoh.core.common.dto.QueueType;
+import com.jeondoh.domainqueue.infrastructure.metrics.QueueMetricsInitializer;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigRepository;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueTransferRepository;
-import com.jeondoh.queuecore.domain.QueueType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.jeondoh.queuecore.utils.StaticVariables.CONFIG_THRESHOLD;
-import static com.jeondoh.queuecore.utils.StaticVariables.CONFIG_TRANSFER_SIZE;
+import static com.jeondoh.core.common.util.StaticVariables.CONFIG_THRESHOLD;
+import static com.jeondoh.core.common.util.StaticVariables.CONFIG_TRANSFER_SIZE;
 
 @Slf4j
 @Component
@@ -21,6 +22,7 @@ public class QueueTransferScheduler {
 
     private final QueueConfigRepository queueConfigRepository;
     private final QueueTransferRepository queueTransferRepository;
+    private final QueueMetricsInitializer queueMetricsInitializer;
 
     // waiting queue -> running queue 이동
     @Scheduled(fixedDelayString = "${queue.transfer.interval}")
@@ -34,6 +36,10 @@ public class QueueTransferScheduler {
                 log.error("큐 처리 중 오류 발생: configKey={}, error={}", configKey, e.getMessage(), e);
             }
         }
+
+        // 메트릭 업데이트
+        queueMetricsInitializer.initializeAllQueueMetrics();
+        queueMetricsInitializer.updateAllGauges();
     }
 
     // 큐 처리

@@ -1,9 +1,9 @@
 package com.jeondoh.domainqueue.infrastructure.repository;
 
+import com.jeondoh.core.common.dto.QueueType;
 import com.jeondoh.domainqueue.api.dto.QueueDomainKey;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrder;
 import com.jeondoh.domainqueue.domain.model.QueueEntry;
-import com.jeondoh.queuecore.domain.QueueType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;

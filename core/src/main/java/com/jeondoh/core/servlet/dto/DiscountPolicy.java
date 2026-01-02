@@ -1,6 +1,6 @@
-package com.jeondoh.apiserver.coupon.api.dto;
+package com.jeondoh.core.servlet.dto;
 
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
+import com.jeondoh.core.servlet.exception.CouponException;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

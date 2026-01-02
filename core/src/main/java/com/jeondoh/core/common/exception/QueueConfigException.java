@@ -1,6 +1,5 @@
-package com.jeondoh.queuecore.exception;
+package com.jeondoh.core.common.exception;
 
-import com.jeondoh.core.common.exception.BaseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 

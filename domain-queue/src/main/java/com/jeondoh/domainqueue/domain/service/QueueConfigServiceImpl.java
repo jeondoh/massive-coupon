@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.jeondoh.queuecore.utils.StaticVariables.*;
+import static com.jeondoh.core.common.util.StaticVariables.*;
 
 @Service
 @RequiredArgsConstructor

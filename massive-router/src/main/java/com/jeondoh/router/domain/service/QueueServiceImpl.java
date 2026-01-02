@@ -1,7 +1,7 @@
 package com.jeondoh.router.domain.service;
 
 import com.jeondoh.core.common.dto.DomainType;
-import com.jeondoh.queuecore.exception.QueueConfigException;
+import com.jeondoh.core.common.exception.QueueConfigException;
 import com.jeondoh.router.api.dto.QueueConfigExists;
 import com.jeondoh.router.api.dto.QueueRunningMemberCheck;
 import com.jeondoh.router.infrastructure.repository.QueueLuaRepository;

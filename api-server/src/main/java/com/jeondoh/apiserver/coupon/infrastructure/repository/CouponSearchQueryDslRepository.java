@@ -1,10 +1,10 @@
 package com.jeondoh.apiserver.coupon.infrastructure.repository;
 
-import com.jeondoh.apiserver.coupon.api.dto.CouponStatus;
 import com.jeondoh.apiserver.coupon.api.dto.SearchCouponParams;
-import com.jeondoh.apiserver.coupon.domain.model.Coupon;
-import com.jeondoh.apiserver.coupon.domain.model.QCoupon;
-import com.jeondoh.apiserver.coupon.domain.model.QCouponDetail;
+import com.jeondoh.core.servlet.dto.CouponStatus;
+import com.jeondoh.core.servlet.model.Coupon;
+import com.jeondoh.core.servlet.model.QCoupon;
+import com.jeondoh.core.servlet.model.QCouponDetail;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;

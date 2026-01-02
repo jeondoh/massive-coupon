@@ -1,7 +1,7 @@
 package com.jeondoh.apiserver.coupon.infrastructure.repository;
 
 import com.jeondoh.apiserver.coupon.api.dto.CouponDetailMetaData;
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
+import com.jeondoh.core.servlet.exception.CouponException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;

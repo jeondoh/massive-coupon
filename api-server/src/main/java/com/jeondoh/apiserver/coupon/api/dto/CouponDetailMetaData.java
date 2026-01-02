@@ -3,6 +3,7 @@ package com.jeondoh.apiserver.coupon.api.dto;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetailHash;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetailRedisKeys;
 import com.jeondoh.core.common.util.TimeHelper;
+import com.jeondoh.core.servlet.dto.RegisterCouponDetailRequest;
 
 import java.time.LocalDateTime;
 

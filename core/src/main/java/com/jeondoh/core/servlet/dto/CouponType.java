@@ -1,4 +1,4 @@
-package com.jeondoh.apiserver.coupon.api.dto;
+package com.jeondoh.core.servlet.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

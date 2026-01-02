@@ -1,6 +1,6 @@
 package com.jeondoh.apiserver.coupon.infrastructure.repository;
 
-import com.jeondoh.apiserver.coupon.domain.model.Coupon;
+import com.jeondoh.core.servlet.model.Coupon;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

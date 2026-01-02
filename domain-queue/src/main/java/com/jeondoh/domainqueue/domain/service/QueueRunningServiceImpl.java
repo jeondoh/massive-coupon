@@ -1,6 +1,6 @@
 package com.jeondoh.domainqueue.domain.service;
 
-import com.jeondoh.core.common.dto.coupon.CouponIssuedRemoveAtRunningQueueMessage;
+import com.jeondoh.core.common.dto.CouponIssuedRemoveAtRunningQueueMessage;
 import com.jeondoh.domainqueue.api.dto.QueueHeartbeat;
 import com.jeondoh.domainqueue.api.dto.QueueRunningScore;
 import com.jeondoh.domainqueue.api.dto.RemoveRunningQueueMember;

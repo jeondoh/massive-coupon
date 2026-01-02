@@ -1,6 +1,4 @@
-package com.jeondoh.core.common.dto.coupon;
-
-import com.jeondoh.core.common.dto.DomainType;
+package com.jeondoh.core.common.dto;
 
 public record CouponIssuedRemoveAtRunningQueueMessage(
         DomainType domainType,

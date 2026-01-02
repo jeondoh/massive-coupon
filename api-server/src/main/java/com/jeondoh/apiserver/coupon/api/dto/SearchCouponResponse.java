@@ -1,8 +1,10 @@
 package com.jeondoh.apiserver.coupon.api.dto;
 
-
-import com.jeondoh.apiserver.coupon.domain.model.Coupon;
-import com.jeondoh.apiserver.coupon.domain.model.CouponDetail;
+import com.jeondoh.core.servlet.dto.CouponStatus;
+import com.jeondoh.core.servlet.dto.CouponType;
+import com.jeondoh.core.servlet.dto.DiscountPolicy;
+import com.jeondoh.core.servlet.model.Coupon;
+import com.jeondoh.core.servlet.model.CouponDetail;
 
 import java.time.LocalDateTime;
 

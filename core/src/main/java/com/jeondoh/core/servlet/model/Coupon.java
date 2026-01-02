@@ -1,9 +1,8 @@
-package com.jeondoh.apiserver.coupon.domain.model;
+package com.jeondoh.core.servlet.model;
 
-import com.jeondoh.apiserver.core.model.BaseEntity;
-import com.jeondoh.apiserver.coupon.api.dto.CouponStatus;
-import com.jeondoh.apiserver.coupon.api.dto.DiscountPolicy;
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
+import com.jeondoh.core.servlet.dto.CouponStatus;
+import com.jeondoh.core.servlet.dto.DiscountPolicy;
+import com.jeondoh.core.servlet.exception.CouponException;
 import jakarta.persistence.*;
 import lombok.*;
 

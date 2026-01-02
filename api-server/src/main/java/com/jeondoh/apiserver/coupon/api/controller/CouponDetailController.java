@@ -1,11 +1,15 @@
 package com.jeondoh.apiserver.coupon.api.controller;
 
-import com.jeondoh.apiserver.coupon.api.dto.*;
+import com.jeondoh.apiserver.coupon.api.dto.RegisterCouponDetailResponse;
+import com.jeondoh.apiserver.coupon.api.dto.SearchCouponDetailParams;
+import com.jeondoh.apiserver.coupon.api.dto.SearchCouponDetailResponse;
+import com.jeondoh.apiserver.coupon.api.dto.SearchEventCouponResponse;
 import com.jeondoh.apiserver.coupon.domain.service.CouponDetailService;
 import com.jeondoh.core.common.component.JwtDecoder;
 import com.jeondoh.core.common.dto.JwtToken;
 import com.jeondoh.core.servlet.PagingResponse;
 import com.jeondoh.core.servlet.ResponseApi;
+import com.jeondoh.core.servlet.dto.RegisterCouponDetailRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

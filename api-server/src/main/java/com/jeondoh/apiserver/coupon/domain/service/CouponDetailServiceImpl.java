@@ -1,11 +1,12 @@
 package com.jeondoh.apiserver.coupon.domain.service;
 
 import com.jeondoh.apiserver.coupon.api.dto.*;
-import com.jeondoh.apiserver.coupon.domain.model.CouponDetail;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRedisRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailRepository;
 import com.jeondoh.apiserver.coupon.infrastructure.repository.CouponDetailSearchQueryDslRepository;
 import com.jeondoh.core.servlet.PagingResponse;
+import com.jeondoh.core.servlet.dto.RegisterCouponDetailRequest;
+import com.jeondoh.core.servlet.model.CouponDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

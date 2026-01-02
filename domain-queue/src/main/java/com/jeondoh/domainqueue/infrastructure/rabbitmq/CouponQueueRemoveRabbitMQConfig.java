@@ -79,7 +79,8 @@ public class CouponQueueRemoveRabbitMQConfig {
 
     @Bean
     public Binding deadLetterQueueRemoveQueueBinding() {
-        return BindingBuilder.bind(deadLetterQueueRemoveQueue()).to(deadLetterQueueRemoveQueueExchange()).with(dlqRoutingKey);
+        return BindingBuilder.bind(deadLetterQueueRemoveQueue())
+                .to(deadLetterQueueRemoveQueueExchange()).with(dlqRoutingKey);
     }
 
     @Bean

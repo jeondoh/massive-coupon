@@ -1,6 +1,6 @@
 package com.jeondoh.domainqueue.api.dto;
 
-import com.jeondoh.queuecore.domain.QueueType;
+import com.jeondoh.core.common.dto.QueueType;
 
 public record QueueRunningScore(
         String runningKey,

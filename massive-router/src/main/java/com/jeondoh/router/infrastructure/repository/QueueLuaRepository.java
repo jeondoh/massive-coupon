@@ -1,7 +1,7 @@
 package com.jeondoh.router.infrastructure.repository;
 
 import com.jeondoh.core.common.dto.DomainType;
-import com.jeondoh.queuecore.domain.QueueType;
+import com.jeondoh.core.common.dto.QueueType;
 import com.jeondoh.router.api.dto.QueueConfigExists;
 import com.jeondoh.router.api.dto.QueueRunningMemberCheck;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jeondoh.queuecore.utils.StaticVariables.CONFIG_THRESHOLD;
-import static com.jeondoh.queuecore.utils.StaticVariables.CONFIG_TRAFFIC_RPM;
+import static com.jeondoh.core.common.util.StaticVariables.CONFIG_THRESHOLD;
+import static com.jeondoh.core.common.util.StaticVariables.CONFIG_TRAFFIC_RPM;
 
 @Repository
 public class QueueLuaRepository {

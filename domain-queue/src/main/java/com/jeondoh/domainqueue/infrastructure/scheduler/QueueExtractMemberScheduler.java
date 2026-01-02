@@ -1,9 +1,9 @@
 package com.jeondoh.domainqueue.infrastructure.scheduler;
 
 import com.jeondoh.core.common.dto.DomainType;
+import com.jeondoh.core.common.dto.QueueType;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigRepository;
 import com.jeondoh.domainqueue.infrastructure.repository.QueueExtractRepository;
-import com.jeondoh.queuecore.domain.QueueType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

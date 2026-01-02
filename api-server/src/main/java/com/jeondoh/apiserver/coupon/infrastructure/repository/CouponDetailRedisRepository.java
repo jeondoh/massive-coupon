@@ -1,8 +1,8 @@
 package com.jeondoh.apiserver.coupon.infrastructure.repository;
 
 import com.jeondoh.apiserver.coupon.api.dto.CouponDetailMetaData;
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
 import com.jeondoh.apiserver.coupon.domain.model.CouponDetailHash;
+import com.jeondoh.core.servlet.exception.CouponException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;

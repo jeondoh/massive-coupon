@@ -1,4 +1,4 @@
-package com.jeondoh.apiserver.coupon.api.dto;
+package com.jeondoh.core.servlet.dto;
 
 import com.jeondoh.core.common.annotation.ValidEnum;
 import jakarta.validation.constraints.NotBlank;

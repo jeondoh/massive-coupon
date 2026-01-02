@@ -1,4 +1,4 @@
-package com.jeondoh.apiserver.coupon.domain.exception;
+package com.jeondoh.core.servlet.exception;
 
 import com.jeondoh.core.common.exception.BaseException;
 import org.springframework.http.HttpStatus;

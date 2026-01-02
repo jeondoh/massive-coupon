@@ -1,9 +1,9 @@
 package com.jeondoh.domainqueue.domain.model;
 
+import com.jeondoh.core.common.dto.QueueType;
 import com.jeondoh.domainqueue.api.dto.QueueDomainKey;
 import com.jeondoh.domainqueue.api.dto.QueueWaitOrder;
 import com.jeondoh.domainqueue.domain.exception.QueueEnterException;
-import com.jeondoh.queuecore.domain.QueueType;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 

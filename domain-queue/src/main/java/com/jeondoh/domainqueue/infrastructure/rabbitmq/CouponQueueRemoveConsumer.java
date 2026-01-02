@@ -1,6 +1,6 @@
 package com.jeondoh.domainqueue.infrastructure.rabbitmq;
 
-import com.jeondoh.core.common.dto.coupon.CouponIssuedRemoveAtRunningQueueMessage;
+import com.jeondoh.core.common.dto.CouponIssuedRemoveAtRunningQueueMessage;
 import com.jeondoh.core.common.infrastructure.rabbitmq.RabbitMQConsumer;
 import com.jeondoh.domainqueue.domain.service.QueueRunningService;
 import lombok.RequiredArgsConstructor;

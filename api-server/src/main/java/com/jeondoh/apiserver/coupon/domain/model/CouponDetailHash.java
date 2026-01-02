@@ -1,7 +1,7 @@
 package com.jeondoh.apiserver.coupon.domain.model;
 
 import com.jeondoh.apiserver.coupon.api.dto.CouponDetailMetaData;
-import com.jeondoh.apiserver.coupon.domain.exception.CouponException;
+import com.jeondoh.core.servlet.exception.CouponException;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
