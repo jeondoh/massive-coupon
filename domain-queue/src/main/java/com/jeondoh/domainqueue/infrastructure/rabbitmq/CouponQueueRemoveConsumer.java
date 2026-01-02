@@ -1,7 +1,7 @@
 package com.jeondoh.domainqueue.infrastructure.rabbitmq;
 
 import com.jeondoh.core.common.dto.CouponIssuedRemoveAtRunningQueueMessage;
-import com.jeondoh.core.common.infrastructure.rabbitmq.RabbitMQConsumer;
+import com.jeondoh.core.servlet.infrastructure.rabbitmq.RabbitMQConsumer;
 import com.jeondoh.domainqueue.domain.service.QueueRunningService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -15,7 +15,7 @@ public class CouponQueueRemoveConsumer {
     private final RabbitMQConsumer rabbitMQConsumer;
     private final QueueRunningService queueRunningService;
 
-    @RabbitListener(queues = "${spring.rabbitmq.queues.coupon-queue-remove.queue-name}")
+    @RabbitListener(queues = "${rabbitmq.queues.coupon-queue-remove.queue-name}")
     public void handleCouponRemove(@Payload CouponIssuedRemoveAtRunningQueueMessage message) {
         rabbitMQConsumer.consume(message, queueRunningService::removeRunningQueueMember);
     }
