@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMQConsumer {
 
-    public <T> void consume(T arg, Consumer<T> consumer) {
+    public <T> void consume(T arg, ConsumerHandler<T> consumerHandler) {
         try {
-            consumer.run(arg);
+            consumerHandler.handle(arg);
         } catch (Exception e) {
             log.error("[RabbitMQ] RabbitListener consume 실패 arg: {}", arg);
             log.error(e.getMessage(), e);
@@ -19,7 +19,7 @@ public class RabbitMQConsumer {
     }
 
     @FunctionalInterface
-    public interface Consumer<T> {
-        void run(T arg) throws Exception;
+    public interface ConsumerHandler<T> {
+        void handle(T arg) throws Exception;
     }
 }
