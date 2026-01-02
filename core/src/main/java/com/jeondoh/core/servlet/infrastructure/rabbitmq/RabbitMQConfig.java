@@ -1,4 +1,4 @@
-package com.jeondoh.core.common.infrastructure.rabbitmq;
+package com.jeondoh.core.servlet.infrastructure.rabbitmq;
 
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;

@@ -1,4 +1,4 @@
-package com.jeondoh.core.common.infrastructure.rabbitmq;
+package com.jeondoh.core.servlet.infrastructure.rabbitmq;
 
 import com.jeondoh.core.common.exception.BaseCoreException;
 import lombok.extern.slf4j.Slf4j;
