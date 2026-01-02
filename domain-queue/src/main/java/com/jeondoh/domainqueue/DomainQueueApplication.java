@@ -7,10 +7,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication(scanBasePackages = {
         "com.jeondoh.domainqueue",
-        "com.jeondoh.core.common.component",
-        "com.jeondoh.core.servlet.component",
-        "com.jeondoh.queuecore.component",
-        "com.jeondoh.core.common.infrastructure.rabbitmq"
+        "com.jeondoh.core.common",
+        "com.jeondoh.core.servlet"
 })
 public class DomainQueueApplication {
 
