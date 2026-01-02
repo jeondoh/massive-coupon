@@ -1,9 +1,32 @@
 description = 'core'
 
+ext {
+    QUERYDSL_VERSION = "5.0.0"
+}
+
 dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.springframework.boot:spring-boot-data-jpa'
     compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
     compileOnly 'org.springframework.data:spring-data-commons'
     compileOnly 'org.springframework.boot:spring-boot-starter-amqp'
+
+    compileOnly "com.querydsl:querydsl-jpa:${QUERYDSL_VERSION}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:${QUERYDSL_VERSION}:jakarta"
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+}
+
+def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
+sourceSets {
+    main.java.srcDirs += [querydslDir]
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+clean.doLast {
+    file(querydslDir).deleteDir()
 }
