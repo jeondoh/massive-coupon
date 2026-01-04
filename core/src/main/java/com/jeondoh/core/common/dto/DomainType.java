@@ -12,20 +12,24 @@ public enum DomainType {
     COUPON;
 
     public String getConfigKey(String resourceId) {
-        return String.format(StaticVariables.CONFIG_KEY + ":%s:%s", this.name(), resourceId);
+        return String.format("%s:%s:%s", StaticVariables.CONFIG_KEY, this.name(), resourceId);
+    }
+
+    public String getConfigId(String resourceId) {
+        return String.format("%s:%s", this.name(), resourceId);
     }
 
     public static String getDefaultConfigKey() {
         String name = DomainType.DEFAULT.name();
-        return String.format(StaticVariables.CONFIG_KEY + ":%s:%s", name, name.toLowerCase());
+        return String.format("%s:%s:%s", StaticVariables.CONFIG_KEY, name, name.toLowerCase());
     }
 
     public String getTrafficKey(String resourceId, LocalDateTime localDateTime) {
         String timeKey = TimeHelper.formatToTenSecondBucket(localDateTime);
-        return String.format(StaticVariables.TRAFFIC_KEY + ":%s:%s:%s", this.name(), resourceId, timeKey);
+        return String.format("%s:%s:%s:%s", StaticVariables.TRAFFIC_KEY, this.name(), resourceId, timeKey);
     }
 
     public String getDomainKey(String resourceId, String memberId) {
-        return this.name() + ":" + resourceId + ":" + memberId;
+        return String.format("%s:%s:%s", this.name(), resourceId, memberId);
     }
 }
