@@ -2,8 +2,7 @@ package com.jeondoh.domainqueue.api.controller;
 
 import com.jeondoh.core.servlet.ResponseApi;
 import com.jeondoh.domainqueue.api.dto.QueueConfigDeleteRequest;
-import com.jeondoh.domainqueue.api.dto.QueueConfigSaveRequest;
-import com.jeondoh.domainqueue.api.dto.QueueConfigUpdateRequest;
+import com.jeondoh.domainqueue.api.dto.QueueConfigRequest;
 import com.jeondoh.domainqueue.domain.service.QueueConfigService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +17,14 @@ public class QueueConfigController {
 
     // 대기열 설정 영구저장
     @PostMapping
-    public ResponseApi<Void> saveConfig(@Valid @RequestBody QueueConfigSaveRequest request) {
+    public ResponseApi<Void> saveConfig(@Valid @RequestBody QueueConfigRequest request) {
         queueConfigService.saveConfig(request);
         return ResponseApi.ok();
     }
 
     // 대기열 설정 업데이트
     @PatchMapping
-    public ResponseApi<Void> updateConfigField(@Valid @RequestBody QueueConfigUpdateRequest request) {
+    public ResponseApi<Void> updateConfigField(@Valid @RequestBody QueueConfigRequest request) {
         queueConfigService.updateConfigField(request);
         return ResponseApi.ok();
     }

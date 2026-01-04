@@ -1,57 +1,44 @@
 package com.jeondoh.domainqueue.domain.service;
 
-import com.jeondoh.core.common.dto.DomainType;
+import com.jeondoh.core.common.exception.QueueConfigException;
 import com.jeondoh.domainqueue.api.dto.QueueConfigDeleteRequest;
-import com.jeondoh.domainqueue.api.dto.QueueConfigSaveRequest;
-import com.jeondoh.domainqueue.api.dto.QueueConfigUpdateRequest;
-import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigRepository;
+import com.jeondoh.domainqueue.api.dto.QueueConfigRequest;
+import com.jeondoh.domainqueue.domain.model.QueueConfigHash;
+import com.jeondoh.domainqueue.infrastructure.repository.QueueConfigCrudRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.jeondoh.core.common.util.StaticVariables.*;
 
 @Service
 @RequiredArgsConstructor
 public class QueueConfigServiceImpl implements QueueConfigService {
 
-    private final QueueConfigRepository queueConfigRepository;
+    private final QueueConfigCrudRepository queueConfigCrudRepository;
 
     // 대기열 설정 영구저장
     @Override
-    public void saveConfig(QueueConfigSaveRequest request) {
-        Map<String, String> config = new HashMap<>();
-        config.put(CONFIG_THRESHOLD, String.valueOf(request.threshold()));
-        config.put(CONFIG_TRANSFER_SIZE, String.valueOf(request.transferSize()));
-        config.put(CONFIG_TRANSFER_INTERVAL, String.valueOf(request.transferInterval()));
-        config.put(CONFIG_TRAFFIC_RPM, String.valueOf(request.trafficRpm()));
-
-        queueConfigRepository.saveConfig(
-                DomainType.valueOf(request.domain()),
-                request.resourceId(),
-                config
-        );
+    public void saveConfig(QueueConfigRequest request) {
+        QueueConfigHash configHash = QueueConfigHash.from(request);
+        queueConfigCrudRepository.save(configHash);
     }
 
     // 대기열 설정 업데이트
     @Override
-    public void updateConfigField(QueueConfigUpdateRequest request) {
-        queueConfigRepository.saveConfigField(
-                DomainType.valueOf(request.domain()),
-                request.resourceId(),
-                request.field(),
-                request.value()
-        );
+    public void updateConfigField(QueueConfigRequest request) {
+        String id = QueueConfigHash.createId(request.domain(), request.resourceId());
+        QueueConfigHash queueConfigHash =
+                queueConfigCrudRepository.findById(id)
+                        .orElseThrow(QueueConfigException::notFoundConfigException);
+
+        queueConfigHash.updateFieldValue(request);
+        queueConfigCrudRepository.save(queueConfigHash);
     }
 
     // 대기열 설정 삭제
     @Override
     public void deleteConfig(QueueConfigDeleteRequest request) {
-        queueConfigRepository.deleteConfig(
-                DomainType.valueOf(request.domain()),
-                request.resourceId()
-        );
+        String id = QueueConfigHash.createId(request.domain(), request.resourceId());
+
+        queueConfigCrudRepository.deleteById(id);
     }
+
 }
