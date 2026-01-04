@@ -3,11 +3,13 @@
 
 -- KEYS[1] = Default Config 키
 -- KEYS[2] = Config 키
+-- KEYS[3] = Config id 값
 
 -- 반환값: config 신규 생성여부 (-1: 에러, 0: 미생성, 1: 생성)
 
 local defaultConfigKey = KEYS[1]
 local domainConfigKey = KEYS[2]
+local domainConfigId = KEYS[3]
 local isCreatedConfig = 0
 
 -- Config 존재 여부 확인
@@ -21,6 +23,7 @@ if configExists == 0 then
     end
 
     redis.call('HSET', domainConfigKey, unpack(defaultConfig))
+    redis.call('SADD', 'config', domainConfigId)
     isCreatedConfig = 1
 end
 

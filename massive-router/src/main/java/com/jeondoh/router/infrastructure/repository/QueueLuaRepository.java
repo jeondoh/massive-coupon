@@ -48,6 +48,7 @@ public class QueueLuaRepository {
         List<String> keys = new ArrayList<>();
         keys.add(DomainType.getDefaultConfigKey());
         keys.add(domainType.getConfigKey(resourceId));
+        keys.add(domainType.getConfigId(resourceId));
 
         return reactiveRedisTemplate.execute(
                 createConfigIfNotExists,
