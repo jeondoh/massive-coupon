@@ -33,7 +33,7 @@ public class QueueWaitOrderServiceImpl implements QueueWaitOrderService {
         );
 
         if (queueWaitOrder.status() == 0L) {
-            throw QueueWaitOrderException.noMemberInWaitingQueue();
+            throw QueueWaitOrderException.noMemberInWaitingQueue("memberId: " + memberId);
         }
 
         return QueueWaitOrderResponse.from(queueWaitOrder);
