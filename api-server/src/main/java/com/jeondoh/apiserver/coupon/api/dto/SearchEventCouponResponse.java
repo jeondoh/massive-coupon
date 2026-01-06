@@ -9,7 +9,6 @@ public record SearchEventCouponResponse(
         Long quantity,
         String couponName,
         DiscountPolicy discountPolicy,
-        Boolean isAlreadyIssued,
         LocalDateTime publishedAt,
         LocalDateTime expiredAt
 ) {

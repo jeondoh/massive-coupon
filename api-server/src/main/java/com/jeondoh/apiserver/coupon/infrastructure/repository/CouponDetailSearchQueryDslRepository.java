@@ -90,7 +90,6 @@ public class CouponDetailSearchQueryDslRepository {
                         couponDetail.quantity.as("quantity"),
                         couponDetail.couponName.as("couponName"),
                         couponDetail.discountPolicy.as("discountPolicy"),
-                        coupon.id.isNotNull().as("isAlreadyIssued"),
                         couponDetail.publishedAt.as("publishedAt"),
                         couponDetail.expiredAt.as("expiredAt")
                 ))
