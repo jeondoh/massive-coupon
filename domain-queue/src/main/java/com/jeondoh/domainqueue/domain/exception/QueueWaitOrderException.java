@@ -14,7 +14,7 @@ public class QueueWaitOrderException extends BaseException {
         super(code, message, statusCode, detailMessage);
     }
 
-    public static QueueWaitOrderException noMemberInWaitingQueue() {
-        return new QueueWaitOrderException("Q_WAIT_ORDER_01", "대기열에 멤버가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+    public static QueueWaitOrderException noMemberInWaitingQueue(String... detailMessage) {
+        return new QueueWaitOrderException("Q_WAIT_ORDER_01", "대기열에 멤버가 존재하지 않습니다.", HttpStatus.NOT_FOUND, detailMessage);
     }
 }
