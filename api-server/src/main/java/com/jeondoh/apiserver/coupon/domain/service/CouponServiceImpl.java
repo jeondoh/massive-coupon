@@ -45,7 +45,6 @@ public class CouponServiceImpl implements CouponService {
 
     // 쿠폰 발급
     @Override
-    @Transactional
     public void issueCoupon(IssueCouponRequest issueCouponRequest) {
         // 쿠폰 데이터 가져오기
         CouponDetailHash couponDetailHash = couponDetailRedisRepository.findCouponDetailMetaData(
