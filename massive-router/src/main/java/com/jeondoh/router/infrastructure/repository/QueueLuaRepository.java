@@ -52,7 +52,9 @@ public class QueueLuaRepository {
 
         return reactiveRedisTemplate.execute(
                 createConfigIfNotExists,
-                keys
+                keys,
+                resourceId,
+                domainType.name()
         );
     }
 
