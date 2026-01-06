@@ -29,11 +29,7 @@ export const options = {
             executor: 'per-vu-iterations',
             vus: 2000,
             iterations: 1,
-            maxDuration: '1m',
-            tags: {
-                test_type: __ENV.TEST_ID || 'coupon-issue',
-                stage: __ENV.LOADGEN || 'pc-01',
-            },
+            maxDuration: '3m',
         },
     },
 };
@@ -55,7 +51,7 @@ export default function () {
     couponIssueFlow(headers);
 
     // 1회만 요청하기 위해 sleep
-    sleep(160);
+    //sleep(160);
 }
 
 // 1. 쿠폰 이벤트 페이지 입장
@@ -63,6 +59,9 @@ function couponIssueFlow(headers) {
     group('Coupon Issue Flow', () => {
         const eventUrl = `${baseUrl}/api/event/coupon/${resourceId}`;
         const eventRes = http.get(eventUrl, {
+            tags: {
+                name: `[쿠폰 이벤트 페이지 입장] /api/event/coupon/${resourceId}`,
+            },
             headers: headers,
             redirects: 0,
         });
@@ -99,7 +98,12 @@ function handleQueueFlow(headers) {
             "domain": domain,
             "resourceId": resourceId
         });
-        const enterRes = http.post(enterUrl, payload, {headers: headers});
+        const enterRes = http.post(enterUrl, payload, {
+            headers: headers,
+            tags: {
+                name: `[대기열 진입 요청] /api/queue/enter`,
+            },
+        });
 
         requestCounter.add(1);
 
@@ -124,7 +128,12 @@ function handleQueueFlow(headers) {
             pollingAttempt++;
 
             const queueOrderUrl = `${baseUrl}/api/queue/order?domain=${domain}&resourceId=${resourceId}`;
-            const queueOrderRes = http.get(queueOrderUrl, {headers: headers});
+            const queueOrderRes = http.get(queueOrderUrl, {
+                headers: headers,
+                tags: {
+                    name: `[입장여부, 대기순번 polling] /api/queue/order?domain=${domain}&resourceId=${resourceId}`,
+                },
+            });
 
             requestCounter.add(1);
 
@@ -170,7 +179,12 @@ function sendHeartbeat(headers) {
             "domain": domain,
             "resourceId": resourceId
         });
-        const heartbeatRes = http.patch(heartbeatUrl, payload, {headers: headers});
+        const heartbeatRes = http.patch(heartbeatUrl, payload, {
+            headers: headers,
+            tags: {
+                name: `[하트비트 요청] /api/queue/heartbeat`,
+            },
+        });
 
         requestCounter.add(1);
 
@@ -192,7 +206,12 @@ function issueCoupon(headers) {
         const payload = JSON.stringify({
             "resourceId": resourceId
         });
-        const issueCouponRes = http.post(issueCouponUrl, payload, {headers: headers});
+        const issueCouponRes = http.post(issueCouponUrl, payload, {
+            tags: {
+                name: `[쿠폰 발급 요청] /api/coupon/${couponDetailId}`,
+            },
+            headers: headers
+        });
 
         requestCounter.add(1);
 
