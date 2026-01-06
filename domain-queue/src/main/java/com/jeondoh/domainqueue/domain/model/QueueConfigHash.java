@@ -23,7 +23,6 @@ public class QueueConfigHash {
 
     private Integer threshold;
     private Integer transferSize;
-    private Integer transferInterval;
     private Integer trafficRpm;
 
     public static QueueConfigHash from(QueueConfigRequest request) {
@@ -35,7 +34,6 @@ public class QueueConfigHash {
                 .resourceId(request.resourceId())
                 .threshold(request.threshold())
                 .transferSize(request.transferSize())
-                .transferInterval(request.transferInterval())
                 .trafficRpm(request.trafficRpm())
                 .build();
     }
@@ -43,7 +41,6 @@ public class QueueConfigHash {
     public void updateFieldValue(QueueConfigRequest request) {
         this.threshold = request.threshold();
         this.transferSize = request.transferSize();
-        this.transferInterval = request.transferInterval();
         this.trafficRpm = request.trafficRpm();
     }
 

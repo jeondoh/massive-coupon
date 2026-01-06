@@ -13,8 +13,6 @@ public record QueueConfigRequest(
         Integer threshold,
         @NotNull(message = "이동 크기 설정은 필수")
         Integer transferSize,
-        @NotNull(message = "이동 주기 설정은 필수")
-        Integer transferInterval,
         @NotNull(message = "분당 요청 설정은 필수")
         Integer trafficRpm
 ) {
