@@ -9,11 +9,15 @@ import com.jeondoh.core.servlet.dto.RegisterCouponDetailRequest;
 import com.jeondoh.core.servlet.model.CouponDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.jeondoh.apiserver.core.util.StaticVariables.COUPON_EVENT_CACHE_KEY;
 
 @Slf4j
 @Service
@@ -27,12 +31,18 @@ public class CouponDetailServiceImpl implements CouponDetailService {
 
     // 선착순 쿠폰조회
     @Override
-    public PagingResponse<SearchEventCouponResponse> searchEventCoupon(Pageable pageable, Sort sort, String memberId) {
+    @Cacheable(
+            cacheNames = COUPON_EVENT_CACHE_KEY,
+            key = "'page:' + #pageable.pageNumber + ':size:' + #pageable.pageSize + ':sort:' + #sort.toString()",
+            condition = "#memberId != null"
+
+    )
+    public SearchEventCouponPageResponse searchEventCoupon(Pageable pageable, Sort sort, String memberId) {
         // 이벤트 쿠폰 목록 조회
         Page<SearchEventCouponResponse> eventCoupon
                 = couponDetailSearchQueryDslRepository.findByEventCoupon(pageable, sort, memberId);
 
-        return PagingResponse.from(eventCoupon);
+        return SearchEventCouponPageResponse.from(eventCoupon);
     }
 
     // 관리자 쿠폰조회
@@ -55,6 +65,7 @@ public class CouponDetailServiceImpl implements CouponDetailService {
     // 관리자 쿠폰등록
     @Override
     @Transactional
+    @CacheEvict(cacheNames = COUPON_EVENT_CACHE_KEY, allEntries = true)
     public RegisterCouponDetailResponse registerCoupon(
             String memberId,
             RegisterCouponDetailRequest registerCouponDetailRequest

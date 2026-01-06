@@ -3,7 +3,7 @@ package com.jeondoh.apiserver.coupon.api.controller;
 import com.jeondoh.apiserver.coupon.api.dto.RegisterCouponDetailResponse;
 import com.jeondoh.apiserver.coupon.api.dto.SearchCouponDetailParams;
 import com.jeondoh.apiserver.coupon.api.dto.SearchCouponDetailResponse;
-import com.jeondoh.apiserver.coupon.api.dto.SearchEventCouponResponse;
+import com.jeondoh.apiserver.coupon.api.dto.SearchEventCouponPageResponse;
 import com.jeondoh.apiserver.coupon.domain.service.CouponDetailService;
 import com.jeondoh.core.common.component.JwtDecoder;
 import com.jeondoh.core.common.dto.JwtToken;
@@ -31,14 +31,14 @@ public class CouponDetailController {
 
     // 선착순 쿠폰 조회
     @GetMapping("/event/coupon/{resourceId}")
-    public ResponseApi<PagingResponse<SearchEventCouponResponse>> searchEventCoupon(
+    public ResponseApi<SearchEventCouponPageResponse> searchEventCoupon(
             HttpServletRequest httpServletRequest,
             @PathVariable String resourceId,
             @PageableDefault Pageable pageable,
             @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC) Sort sort
     ) {
         JwtToken jwtToken = jwtDecoder.decode(httpServletRequest.getHeader(AUTH_HEADER_PREFIX_KEY));
-        PagingResponse<SearchEventCouponResponse> eventCoupon
+        SearchEventCouponPageResponse eventCoupon
                 = couponDetailService.searchEventCoupon(pageable, sort, jwtToken.memberId());
         return ResponseApi.ok(eventCoupon);
     }

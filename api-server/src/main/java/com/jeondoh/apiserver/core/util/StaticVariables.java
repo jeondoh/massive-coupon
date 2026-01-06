@@ -11,4 +11,7 @@ public final class StaticVariables {
     public static final String COUPON_DETAIL_KEY = "coupon:detail";
     public static final String COUPON_ISSUED_QUANTITY_KEY = "coupon:issued:quantity";
     public static final String COUPON_ISSUED_MEMBER_KEY = "coupon:issued:member";
+
+    // Redis Cache KEY값
+    public static final String COUPON_EVENT_CACHE_KEY = "coupon:event:cache";
 }
