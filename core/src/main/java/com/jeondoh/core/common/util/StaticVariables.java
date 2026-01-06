@@ -36,8 +36,5 @@ public final class StaticVariables {
     // 이동 크기
     // - 이동시킬 사용자 수
     public static final String CONFIG_TRANSFER_SIZE = "transferSize";
-    // 이동 주기 ex) waiting queue -> running queue
-    // - 스케줄러 실행 주기
-    public static final String CONFIG_TRANSFER_INTERVAL = "transferInterval";
 
 }
