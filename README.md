@@ -7,9 +7,10 @@
 - [Wiki로 이동하기](https://github.com/jeondoh/massive-coupon/wiki)
 
 ## 기술 스택
-![stack](https://github.com/user-attachments/assets/d963d0de-9564-4504-bfca-3401f72b8327)
+![stack](https://github.com/user-attachments/assets/fee6001d-46af-4a3a-b67c-6aca93f5572e)
 
 ## 서버 아키텍처
+![a](https://github.com/user-attachments/assets/d40e1653-4273-4b4c-a2ed-a9d7274b22df)
 
 ### 1. 라우팅 서버
 - 모든 클라이언트 요청의 진입 지점이며, 현재 트래픽 상황 및 이벤트 상태에 따라 요청을 대기열 서버 또는 쿠폰 서버로 동적 라우팅합니다.
