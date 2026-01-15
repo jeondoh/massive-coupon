@@ -4,7 +4,7 @@
 
 ## 📖 Wiki  
 - 프로젝트 진행 중 겪었던 문제 해결 과정과 성능 개선 과정에 대한 더 자세한 내용은 아래 Wiki 페이지에서 확인하실 수 있습니다.  
-- [Wiki로 이동하기](https://github.com/jeondoh/massive-coupon/wiki)
+- [Wiki로 이동하기](https://github.com/jeondoh/massive-coupon/wiki/%EA%B3%A0%EB%8F%84%ED%99%94-%EA%B3%BC%EC%A0%95-WIKI)
 
 ## 기술 스택
 ![stack](https://github.com/user-attachments/assets/fee6001d-46af-4a3a-b67c-6aca93f5572e)
