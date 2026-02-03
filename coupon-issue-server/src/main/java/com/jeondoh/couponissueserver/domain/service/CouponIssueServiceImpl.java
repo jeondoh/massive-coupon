@@ -4,10 +4,12 @@ import com.jeondoh.core.common.dto.CouponIssuedRemoveAtRunningQueueMessage;
 import com.jeondoh.core.servlet.dto.CouponIssuePayload;
 import com.jeondoh.core.servlet.model.Coupon;
 import com.jeondoh.core.servlet.model.CouponDetail;
+import com.jeondoh.couponissueserver.domain.exception.CouponIssueException;
 import com.jeondoh.couponissueserver.infrastructure.rabbitmq.CouponQueueRemoveProducer;
 import com.jeondoh.couponissueserver.infrastructure.repository.CouponIssueRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +32,12 @@ public class CouponIssueServiceImpl implements CouponIssueService {
         );
         // 쿠폰 발급
         Coupon coupon = Coupon.issuedCoupon(couponIssuePayload.memberId(), couponIssuePayload.order(), couponDetailRef);
-        couponIssueRepository.save(coupon);
-
+        try {
+            couponIssueRepository.save(coupon);
+        } catch (DataIntegrityViolationException e) {
+            // 중복발급 처리
+            throw CouponIssueException.duplicateCouponException(couponIssuePayload.memberId());
+        }
         // running queue 멤버 제거 요청
         CouponIssuedRemoveAtRunningQueueMessage message = CouponIssuedRemoveAtRunningQueueMessage.of(
                 couponIssuePayload.resourceId(),
